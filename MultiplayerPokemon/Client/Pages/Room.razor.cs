@@ -36,6 +36,9 @@ namespace MultiplayerPokemon.Client.Pages
                     User = UserState.Value.User,
                     SentDate = DateTime.Now
                 }));
+
+                messageText = string.Empty;
+                StateHasChanged();
             }
         }
     }
