@@ -1,0 +1,22 @@
+﻿@page "/"
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<PageTitle>Index</PageTitle>
+<div class="main-wrapper">
+<AuthorizeView>
+    <Authorized>
+        @if (string.IsNullOrWhiteSpace(RoomState.Value?.RoomName))
+        {
+            <Rooms />
+        }
+        else
+        {
+            <Room />
+        }
+    </Authorized>
+    <NotAuthorized>
+        <Login />
+    </NotAuthorized>
+</AuthorizeView>
+</div>
+

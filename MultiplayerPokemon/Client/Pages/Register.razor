@@ -1,0 +1,36 @@
+﻿@page "/register"
+
+<PageTitle>Register</PageTitle>
+
+<div class="main-form-wrapper">
+
+<EditForm Model="user" OnValidSubmit="HandleRegisterUser" class="login-form">
+    <div class="login-wrapper">
+        <div class="input-form-group">
+            <div class="input-form">
+                <label for="username">Username</label>
+                <InputText id="username" @bind-Value="user.Username"></InputText>
+            </div>
+            <div class="input-form">
+                <label for="email">Email</label>
+                <InputText id="email" @bind-Value="user.Email"></InputText>
+            </div>
+            <div class="input-form">
+                <label for="password">Password</label>
+                <InputText id="password" @bind-Value="user.Password" type="password"></InputText>
+            </div>
+            <div class="input-form">
+                <label for="password-match">Confirm Password</label>
+                <InputText id="password-match" @bind-Value="user.PasswordCheck" type="password"></InputText>
+            </div>
+        </div>
+        <br />
+        <button type="submit">Register</button>
+    </div>
+        <DataAnnotationsValidator />
+</EditForm>
+
+<div class="register-link-wrapper">
+    <h3>Already have an account?  <NavLink style="color: white;" href="">Back To Login</NavLink></h3>
+</div>
+</div>

@@ -1,0 +1,16 @@
+﻿@page "/rooms"
+@using Microsoft.AspNetCore.Authorization
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@attribute [Authorize]
+
+<h3>Rooms</h3>
+
+<form @onsubmit="HandleAddRoom">
+    <input type="text" @bind-value="newRoomName" ></input >
+    <button type="submit">Create Room</button>
+</form>
+
+<form @onsubmit="HandleOnRoomConnect">
+    <input type="text" @bind-value="roomName" ></input >
+    <button type="submit">Connect To Room</button>
+</form>

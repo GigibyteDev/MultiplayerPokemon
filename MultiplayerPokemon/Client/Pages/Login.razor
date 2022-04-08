@@ -1,0 +1,24 @@
+﻿@page "/login"
+@using MultiplayerPokemon.Client.Models
+
+<div class="main-form-wrapper">
+
+<EditForm Model="user" OnValidSubmit="HandleLogin" class="login-form">
+    <div class="login-wrapper">
+        <div class="input-form">
+            <label for="username">Username</label>
+            <InputText id="username" @bind-Value="user.Username"></InputText>
+        </div>
+        <div class="input-form">
+            <label for="password">Password</label>
+            <InputText id="password" @bind-Value="user.Password" type="password"></InputText>
+        </div>
+        <br />
+        <button type="submit">Login</button>
+    </div>
+        <DataAnnotationsValidator />
+</EditForm>
+<div class="register-link-wrapper">
+    <h3>Don't have an account? <NavLink style="color: white;" href="register">Register</NavLink></h3>
+</div>
+</div>

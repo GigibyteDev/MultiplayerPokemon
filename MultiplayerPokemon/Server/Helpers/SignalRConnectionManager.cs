@@ -1,0 +1,130 @@
+﻿using MultiplayerPokemon.Shared.Models;
+
+namespace MultiplayerPokemon.Server.Helpers
+{
+    public class SignalRConnectionManager
+    {
+        public IDictionary<string, UserModel> CurrentlyConnectedUsers { get; set; }
+        private IDictionary<string, List<UserConnectionLookup>> UserConnectionsPerRoom { get; set; }
+
+        public SignalRConnectionManager()
+        {
+            CurrentlyConnectedUsers = new Dictionary<string, UserModel>();
+            UserConnectionsPerRoom = new Dictionary<string, List<UserConnectionLookup>>();
+        }
+
+        public IEnumerable<string> GetConnectionIds(IEnumerable<UserModel> userModels)
+        {
+            return CurrentlyConnectedUsers.Where(ccu => userModels.Select(um => um.Id).Contains(ccu.Value.Id)).Select(ccu => ccu.Key);
+        }
+
+        public bool AddUserConnection(string connectionId, UserModel user)
+        {
+            if (!CurrentlyConnectedUsers.ContainsKey(connectionId))
+            {
+                CurrentlyConnectedUsers.Add(connectionId, user);
+                return true;
+            }
+            return false;
+        }
+
+        public bool RemoveUserConnection(string connectionId)
+        {
+            if (CurrentlyConnectedUsers.ContainsKey(connectionId))
+            {
+                CurrentlyConnectedUsers.Remove(connectionId);
+                return true;
+            }
+            return false;
+        }
+
+        public bool AddUserToRoomLookup(string connectionId, string roomName)
+        {
+            if (CurrentlyConnectedUsers.TryGetValue(connectionId, out UserModel? user))
+            {
+                if (UserConnectionsPerRoom.ContainsKey(roomName))
+                {
+                    if (UserConnectionsPerRoom[roomName].Any(uc => uc.UserId == user.Id))
+                    {
+                        UserConnectionsPerRoom[roomName].Single(r => r.UserId == user.Id).ConnectionIds.Add(connectionId);
+                    }
+                    else
+                    {
+                        UserConnectionsPerRoom[roomName].Add(new UserConnectionLookup { UserId = user.Id, ConnectionIds = new List<string>() { connectionId } });
+                    }
+                }
+                else
+                {
+                    UserConnectionsPerRoom.Add(roomName, new List<UserConnectionLookup>()
+                    {
+                        new UserConnectionLookup { UserId = user.Id, ConnectionIds = new List<string>() { connectionId } }
+                    });
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool RemoveConnectionIdFromRoomLookup(string connectionId, string roomName)
+        {
+            if (CurrentlyConnectedUsers.TryGetValue(connectionId, out UserModel? user))
+            {
+                if (UserConnectionsPerRoom.ContainsKey(roomName))
+                {
+                    UserConnectionsPerRoom[roomName].Single(r => r.UserId == user.Id).ConnectionIds.RemoveAll(c => c == connectionId);
+                    bool returnResult = !UserConnectionsPerRoom[roomName].Single(r => r.UserId == user.Id).ConnectionIds.Any();
+                    if (returnResult)
+                    {
+                        UserConnectionsPerRoom[roomName].RemoveAll(r => r.UserId == user.Id);
+                    }
+                    return returnResult;
+                }
+            }
+
+            return false;
+        }
+
+        public bool RemoveConnectionIdFromRoomLookup(string connectionId, out string roomName)
+        {
+            if (CurrentlyConnectedUsers.TryGetValue(connectionId, out UserModel? user))
+            {
+                roomName = GetUsersConnectedRoom(user.Id);
+
+                return RemoveConnectionIdFromRoomLookup(connectionId, roomName);
+            }
+
+            roomName = string.Empty;
+            return false;
+        }
+
+        public string GetUsersConnectedRoom(int userId)
+        {
+            return UserConnectionsPerRoom.First(room => room.Value.Any(ucpp => ucpp.UserId == userId)).Key;
+        }
+
+        public IEnumerable<string> GetAllAssociatedConnectionIds(string connectionId)
+        {
+            if (CurrentlyConnectedUsers.TryGetValue(connectionId, out UserModel? user))
+            {
+                var associatedConnectionIds = CurrentlyConnectedUsers.Where(c => c.Value.Id == user.Id);
+                List<string> ids = new List<string>();
+                foreach(var id in associatedConnectionIds)
+                {
+                    ids.Add(id.Key);
+                }
+
+                return ids;
+            }
+            return new List<string>() { connectionId };
+        }
+
+        
+        private class UserConnectionLookup
+        {
+            public int UserId { get; set; }
+            public List<string> ConnectionIds { get; set; }
+        }
+    }
+}
