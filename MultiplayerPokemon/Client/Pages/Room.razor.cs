@@ -1,5 +1,8 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.Components;
+using MultiplayerPokemon.Client.Clients;
+using MultiplayerPokemon.Client.Helpers;
+using MultiplayerPokemon.Client.Models;
 using MultiplayerPokemon.Client.Store.RoomUseCase;
 using MultiplayerPokemon.Client.Store.RoomUseCase.RoomActions;
 using MultiplayerPokemon.Client.Store.SignalRConnectionUseCase;
@@ -22,8 +25,39 @@ namespace MultiplayerPokemon.Client.Pages
         [Inject]
         private IState<UserState> UserState { get; set; }
 
+        [Inject]
+        private GQLPokemonClient GQLPokemonClient { get; set; }
 
+        [Inject]
+        private RESTPokemonClient RESTPokemonClient { get; set; }
+
+
+        private List<string> PokemonNames = new List<string>();
         private string messageText = string.Empty;
+        private string pokemonId = string.Empty;
+        private PokemonModel? searchedPokemon;
+        private bool roomTabToggle = true;
+
+        protected override async Task OnInitializedAsync()
+        {
+            if (GQLPokemonClient is not null)
+            {
+                var pokemonNames = await GQLPokemonClient.GetPokemonNames();
+                PokemonNames = pokemonNames.ToList();
+            }
+
+            await base.OnInitializedAsync();
+        }
+
+        private void ToggleToSearch()
+        {
+            roomTabToggle = true;
+        }
+
+        private void ToggleToParty()
+        {
+            roomTabToggle = false;
+        }
 
         private async void HandleSendMessage()
         {
@@ -40,6 +74,23 @@ namespace MultiplayerPokemon.Client.Pages
                 messageText = string.Empty;
                 StateHasChanged();
             }
+        }
+
+        private async void HandleGetPokemon(string? overridePokemonName = null)
+        {
+            if (RESTPokemonClient is not null)
+            {
+                if (overridePokemonName is not null)
+                    pokemonId = overridePokemonName;
+
+                searchedPokemon = await RESTPokemonClient.GetPokemonById(pokemonId.FromDisplayName().ToLower());
+                StateHasChanged();
+            }
+        }
+
+        private async Task<IEnumerable<string>> SearchPokemon(string searchText)
+        {
+            return await Task.FromResult(PokemonNames.Where(p => p.ToLower().Contains(searchText.ToLower())).ToList());
         }
     }
 }

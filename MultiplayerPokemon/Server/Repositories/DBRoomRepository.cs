@@ -32,6 +32,11 @@ namespace MultiplayerPokemon.Server.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<RoomData>> GetRoomListData()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<RoomModel?> GetUserRoomIfConnected(UserModel user)
         {
             throw new NotImplementedException();

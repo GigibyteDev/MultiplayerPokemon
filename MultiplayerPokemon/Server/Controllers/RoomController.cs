@@ -5,6 +5,7 @@ using MultiplayerPokemon.Shared.Dtos;
 
 namespace MultiplayerPokemon.Server.Controllers
 {
+    [Authorize]
     public class RoomController : ControllerBase
     {
         private readonly IRoomOrchestrator roomOrchestrator;
@@ -17,7 +18,7 @@ namespace MultiplayerPokemon.Server.Controllers
         [HttpGet("GetRoomListData")]
         public async Task<IEnumerable<RoomData>> GetRoomListData()
         {
-            return new List<RoomData>();
+            return await roomOrchestrator.GetRoomListData();
         }
 
         [HttpPost("CreateRoom")]

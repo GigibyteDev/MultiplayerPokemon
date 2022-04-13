@@ -62,5 +62,10 @@ namespace MultiplayerPokemon.Server.Orchestrators
         {
             return await roomRepository.AddMessageToRoom(message, roomName);
         }
+
+        public async Task<IEnumerable<RoomData>> GetRoomListData()
+        {
+            return await roomRepository.GetRoomListData();
+        }
     }
 }

@@ -51,6 +51,7 @@ namespace MultiplayerPokemon.Server.Services
                     ValidateIssuerSigningKey = true,
                     ValidateIssuer = true,
                     ValidateAudience = true,
+                    ValidateLifetime = true,
                     ValidIssuer = AppSettings.Issuer,
                     ValidAudience = AppSettings.Audience,
                     IssuerSigningKey = mySecurityKey

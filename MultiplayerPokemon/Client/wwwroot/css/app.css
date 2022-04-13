@@ -18,6 +18,26 @@ input {
     border-radius: 5px;
     border: none;
     margin: 5px;
+    text-align: center;
+}
+
+.blazored-typeahead{
+    background-color: #757575 !important;
+    color: white;
+    border: none !important;
+    width: 60% !important;
+    margin-bottom: 10px;
+}
+
+.blazored-typeahead__input {
+    text-align: center !important;
+    color: black !important;
+}
+
+.blazored-typeahead__input-mask {
+    text-align: center !important;
+    width: 100% !important;
+    justify-content: center !important;
 }
 
 #blazor-error-ui {

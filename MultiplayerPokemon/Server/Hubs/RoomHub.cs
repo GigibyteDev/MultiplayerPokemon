@@ -110,8 +110,8 @@ namespace MultiplayerPokemon.Server.Hubs
         {
             if (connectionManager.CurrentlyConnectedUsers.TryGetValue(Context.ConnectionId, out UserModel? user))
             {
-                bool noOtherConnections = connectionManager.RemoveConnectionIdFromRoomLookup(Context.ConnectionId, out string roomName);
-                if (noOtherConnections)
+                bool anyOtherConnections = connectionManager.RemoveConnectionIdFromRoomLookup(Context.ConnectionId, out string roomName);
+                if (!anyOtherConnections)
                 {
                     var roomsRemoved = await roomOrchestrator.RemoveUserFromRoom(user, roomName);
                     await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
@@ -130,8 +130,8 @@ namespace MultiplayerPokemon.Server.Hubs
         {
             if (connectionManager.CurrentlyConnectedUsers.TryGetValue(Context.ConnectionId, out UserModel? user))
             {
-                bool noOtherConnections = connectionManager.RemoveConnectionIdFromRoomLookup(Context.ConnectionId, roomName);
-                if (noOtherConnections)
+                bool anyOtherConnections = connectionManager.RemoveConnectionIdFromRoomLookup(Context.ConnectionId, roomName);
+                if (anyOtherConnections)
                 {
                     await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
                     bool userRemoved = await roomOrchestrator.RemoveUserFromRoom(user, roomName);

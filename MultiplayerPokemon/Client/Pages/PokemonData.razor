@@ -1,0 +1,107 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@if (PokemonModel is not null)
+{
+    <div class="pokemon-info-wrapper">
+        <div class="pokemon-image-info-wrapper">
+            <div class="party-add-button-wrapper">
+            
+            </div>
+            <div class="pokemon-name-and-id-title">
+                @if (PokemonModel.Alts.Count() > 1)
+                {
+                    <select @bind="PokemonAltDropdown" name="pokemonAlts" class="pokemon-name-label-dropdown" id="pokemonAlts">
+                        @foreach(var alt in PokemonModel.Alts)
+                        {
+                            <option selected="@(PokemonModel.Name == alt.Name)" value=@alt.Name>@alt.Name.ToDisplayName()</option>
+                        }
+                    </select>
+                }
+                else
+                {
+                    <label class="pokemon-name-label">@PokemonModel.Name.ToDisplayName()</label>
+                }
+
+                @if (PokemonModel.Id < 10000)
+                {
+                    <span class="pokemon-id-label">Pokedex #@PokemonModel.Id</span>
+                }
+                else
+                {
+                    <br />
+                }
+            </div>
+            <div class="image-and-controls">
+                <div class="higher-buttons">
+                    @if (Gender == "genderless")
+                    {
+                        <div class="high-button">
+                            <i class="bi bi-gender-ambiguous" style="color: purple"></i>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="high-button" @onclick=(HandleGenderChange)>
+                            @if (Gender == "male")
+                            {
+                                <i class="bi bi-gender-male" style="color: blue"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-gender-female" style="color: red"></i>
+                            }
+                        </div>
+                    }
+                    <div class="high-button" @onclick=(HandleFlipSet)>
+                        @if (IsFront)
+                        {
+                            <i class="bi bi-arrow-clockwise"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        }
+                    </div>
+
+                    <div class="high-button" @onclick=(HandleShinyChange)>
+                        @if (IsShiny)
+                        {
+                            <i class="bi bi-star-fill" style="color: #ffec83"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-star"></i>
+                        }
+                    </div>
+                </div>
+                <div class="top-layer-info">
+                        <i class="bi bi-caret-left-square-fill next-icon" @onclick='() => GetNextPokemon("previous")'></i>
+                        <img id="pokemonSprite" class="pokemon-sprite" src="@ImgUri" alt="pokemon view" />
+                        <i class="bi bi-caret-right-square-fill next-icon" @onclick='() => GetNextPokemon("next")'></i>
+                    </div>
+                    <div class="pokemon-physical-stats">
+                        <div class="pokemon-physical-stat">
+                            <div class="stat-item-label">Weight</div>
+                            <div class="stat-item-value">@(PokemonModel.Weight / 10) kg</div>
+                        </div>
+                        <div class="type-icon-container">
+                            @*<TypeIcons PokemonTypes=@PokemonModel.Types />*@
+                        </div>
+                        <div class="pokemon-physical-stat">
+                            <div class="stat-item-label">Height</div>
+                            <div class="stat-item-value">@(PokemonModel.Height / 10) m</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-collection">
+                    @foreach(var stat in PokemonModel.Stats)
+                    {
+                        <div class="stat-item">
+                            <div class="stat-item-label">@stat.Name</div>
+                            <div class="stat-item-value">@stat.Base</div>
+                        </div>
+                    }
+            </div>
+        </div>
+    </div>
+}

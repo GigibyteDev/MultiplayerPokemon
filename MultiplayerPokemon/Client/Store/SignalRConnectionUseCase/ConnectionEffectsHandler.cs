@@ -78,7 +78,7 @@ namespace MultiplayerPokemon.Client.Store.SignalRConnectionUseCase
             }
             catch (Exception ex)
             {
-                dispatcher.Dispatch(new ConnectionDroppedAction("Count not instantiateConnection... Exception: " + ex.Message));
+                dispatcher.Dispatch(new ConnectionDroppedAction("Count not instantiate Connection... Exception: " + ex.Message));
             }
         }
     }

@@ -73,7 +73,10 @@ namespace MultiplayerPokemon.Server.Repositories
             if (GetRoomIfExists(roomName, out RoomModel room))
             {
                 room.CurrentUsers.RemoveAll(u => u.Id == user.Id);
-
+                if (room.CurrentUsers.Count == 0)
+                {
+                    Rooms.Remove(room);
+                }
                 return true;
             }
             return false;
@@ -107,6 +110,23 @@ namespace MultiplayerPokemon.Server.Repositories
             }
 
             return false;
+        }
+
+        public async Task<IEnumerable<RoomData>> GetRoomListData()
+        {
+            IList<RoomData> roomData = new List<RoomData>();
+
+            foreach (RoomModel room in Rooms)
+            {
+                roomData.Add(new RoomData()
+                {
+                    DateCreated = room.DateCreated,
+                    Name = room.RoomName,
+                    UsersConnected = room.CurrentUsers.Count
+                });
+            }
+
+            return roomData;
         }
 
         private bool GetRoomIfExists(string roomName, out RoomModel room)

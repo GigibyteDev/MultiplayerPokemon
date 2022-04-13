@@ -5,28 +5,81 @@
 
 @if (RoomState.Value is not null)
 {
-<div class="room-title-wrapper">
-    <h1 class="roomname-display-text">@RoomState.Value.RoomName</h1>
-    <h4 class="username-display-text">Connected As: @UserState.Value?.User.Username</h4>
-</div>
-<div class="main-room-wrapper">
-    <div class="pokemon-wrapper">
-        
-    </div>
-    <div class="chat-wrapper">
-        <h2>Chat</h2>
-        <div class="chat-window">
-            @foreach(var message in RoomState.Value.Chat.Messages)
-            {
-                <div class="message">
-                    @message.MessageText
+<div class="full-room-wrapper">
+    <div class="main-room-wrapper">
+        <div class="pokemon-header-body-wrapper">
+            <div class="room-header-wrapper">
+                <div class="header-items-wrapper">
+                    <div class="room-title-wrapper">
+                        <h1 class="roomname-display-text">@RoomState.Value.RoomName</h1>
+                        <h4 class="username-display-text">Connected As: @UserState.Value?.User.Username</h4>
+                    </div>
+                    <div class="header-tabs">
+                        <div class="header-item @(roomTabToggle ? "selected-header-item" : string.Empty)"
+                                @onclick=(ToggleToSearch)>
+                            <h3>Pokemon Search</h3>
+                        </div>
+                        <div class="header-item @(!roomTabToggle ? "selected-header-item" : string.Empty)"
+                            @onclick=(ToggleToParty)>
+                            <h3>Party</h3>
+                        </div>
+                    </div>
                 </div>
-            }
+            </div>
+            <div class="pokemon-wrapper">
+                @if (roomTabToggle)
+                {
+                    <div class="pokemon-search-wrapper">
+                        @*<input type="text" @bind-value="pokemonId"></input>*@
+                        <form @onsubmit="() => HandleGetPokemon()" class="pokemon-search-form">
+                            <BlazoredTypeahead SearchMethod="SearchPokemon" @bind-Value="pokemonId">
+                                <SelectedTemplate>
+                                    <div class="typeahead-search-wrapper">
+                                        @context
+                                    </div>
+                                </SelectedTemplate>
+                                <ResultTemplate>
+                                    <div class="typeahead-result-wrapper">
+                                        @context
+                                    </div>
+                                </ResultTemplate>
+                                <NotFoundTemplate>
+                                    No Pokemon Found!
+                                </NotFoundTemplate>
+                            </BlazoredTypeahead>
+                            <button type="submit">Search Pokemon</button>
+                        </form>
+                        @if (searchedPokemon is not null)
+                        {
+                            <PokemonData PokemonModel="@searchedPokemon" GetPokemon="@HandleGetPokemon" />
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="pokemon-party-wrapper">
+
+                    </div>  
+                }
+            </div>
         </div>
-        <form @onsubmit="HandleSendMessage" class="message-send-form">
-            <input type="text" @bind-value="messageText" class="send-message-box"></input >
-            <button type="submit">Send</button>
-        </form>
+        <div class="chat-wrapper">
+            <div class="chat-header-wrapper">
+                <h2>Chat</h2>
+            </div>
+            <div class="chat-window">
+                @foreach(var message in RoomState.Value.Chat.Messages)
+                {
+                    <div class="message">
+                        @message.MessageText
+                    </div>
+                }
+            </div>
+            <form @onsubmit="HandleSendMessage" class="message-send-form">
+                <input type="text" @bind-value="messageText" class="send-message-box"></input >
+                <button type="submit">Send</button>
+            </form>
+        </div>
     </div>
 </div>
 }

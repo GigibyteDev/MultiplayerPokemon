@@ -9,5 +9,6 @@
         public List<UserModel> UserHistory { get; set; }
         public ChatModel Chat { get; set; }
         public PartyModel PokemonParty { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

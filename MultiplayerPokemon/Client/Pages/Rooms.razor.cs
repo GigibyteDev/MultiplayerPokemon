@@ -26,8 +26,9 @@ namespace MultiplayerPokemon.Client.Pages
         [Inject]
         private IState<ConnectionState> ConnectionState { get; set; }
 
-        private string roomName = string.Empty;
         private string newRoomName = string.Empty;
+
+        private List<RoomData> roomData = new List<RoomData>();
 
         protected override async Task OnInitializedAsync()
         {
@@ -41,10 +42,14 @@ namespace MultiplayerPokemon.Client.Pages
                 }
             }
 
+            var result = await Http.GetFromJsonAsync<IEnumerable<RoomData>>("GetRoomListData");
+
+            roomData = result?.ToList() ?? new List<RoomData>();
+
             await base.OnInitializedAsync();
         }
 
-        private void HandleOnRoomConnect()
+        private void HandleOnRoomConnect(string roomName)
         {
             if (ConnectionState.Value?.Connection is not null && !string.IsNullOrWhiteSpace(roomName))
             {

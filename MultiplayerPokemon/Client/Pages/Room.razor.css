@@ -1,22 +1,119 @@
-﻿.main-room-wrapper{
+﻿.main-room-wrapper {
+    margin-top: 50px;
+    box-shadow: 0px 0px 20px black;
+    border-radius: 10px;
+}
+
+.header-items-wrapper{
     display: flex;
+}
+
+.header-tabs{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-divider{
+    height: 100%;
+    width: 1px;
+    background-color: black;
+}
+
+.header-item {
+    padding-left: 3em;
+    padding-right: 3em;
+    height: 100%;
+    outline: 3px solid #9E9E9E;
+    margin-left: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.selected-header-item {
+    background-color: #9E9E9E;
+    color: black;
+}
+
+.roomname-display-text {
+    margin: 0px;
+}
+
+.username-display-text{
+    margin: 0px;
+}
+
+.main-room-wrapper {
+    display: flex;
+    min-width: 80em;
+    min-height: 28em;
     width: 80vw;
     height: 80vh;
     overflow: hidden;
     white-space: unset;
+    flex-direction: row;
+    padding: 20px;
+    background-color: #212121;
 }
 
 .room-title-wrapper{
+    margin-left: 2em;
+    display: flex;
+    flex-direction: column;
+}
+
+.pokemon-header-body-wrapper{
+    flex: 2;
+}
+
+.room-header-wrapper {
+    margin-bottom: 3em;
+    background-color: #121212;
+    padding: 1em;
+    margin-left: -2em;
+    margin-top: -1.3em;
+}
+
+.chat-header-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    margin-bottom: 3em;
+    background-color: #E0E0E0;
+    height: 6em;
+}
+
+.pokemon-wrapper {
+    flex: 2;
+    display: flex;
+}
+
+.pokemon-search-wrapper {
+    flex: 1;
+}
+
+.pokemon-search-form{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.pokemon-wrapper {
-    flex: 2;
+.pokemon-party-wrapper {
+    flex: 1;
 }
 
-.chat-wrapper{
+.typeahead-result-wrapper{
+    color: black;
+    text-align: center;
+}
+
+.typeahead-search-wrapper{
+    text-align: center;
+}
+
+.chat-wrapper {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -24,7 +121,10 @@
     width: 100%;
     align-items: center;
     flex: 1;
-    background-color: gray;
+    background-color: #9E9E9E;
+    color: black;
+    margin-top: -1.4em;
+    border-radius: 5px;
 }
 
 .chat-window{

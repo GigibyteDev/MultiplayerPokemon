@@ -3,8 +3,8 @@
     public enum PokemonGenderTypes
     {
         Genderless,
-        Male,
-        Female,
-        Unknown
+        MaleOrFemale,
+        MaleOnly,
+        FemaleOnly
     }
 }

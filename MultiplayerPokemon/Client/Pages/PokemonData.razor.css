@@ -1,0 +1,161 @@
+﻿.top-layer-info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.next-icon {
+    padding-top: 75px;
+    padding-left: 50px;
+    padding-right: 50px;
+    cursor: pointer;
+}
+
+.pokemon-info-wrapper {
+    display: flex;
+    justify-content: center;
+    text-transform: capitalize;
+}
+
+.pokemon-name-and-id-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.party-add-button-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.party-add-button {
+    padding: 10px;
+    margin-bottom: -38px;
+    border-radius: 5px;
+    background-color: #003fb3;
+}
+
+.pokemon-name-label {
+    font-size: 175%;
+    font-weight: bold;
+}
+
+.pokemon-name-label-dropdown {
+    font-size: 175%;
+    font-weight: bold;
+    text-align: center;
+    text-transform: capitalize;
+    background-color: #3a3b3c;
+    color: #b0b3b8;
+    border: none;
+    user-select: none;
+    border-radius: 5px;
+}
+
+    .pokemon-name-label-dropdown:focus-visible {
+        outline: none;
+    }
+
+.pokemon-physical-stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.pokemon-physical-stat {
+    padding: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+    text-align: center;
+}
+
+.pokemon-sprite {
+    width: 150px;
+    height: 150px;
+}
+
+.pokemon-image-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #3a3b3c;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.stats-collection {
+    display: flex;
+}
+
+.stat-item-label {
+    font-size: large;
+    font-weight: bold;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+
+.image-and-controls {
+    display: flex;
+    flex-direction: column;
+}
+
+.higher-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}
+
+.high-button {
+    border: 1px solid #18191a;
+    background-color: #b0b3b8;
+    color: #18191a;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.bounce {
+    animation-name: bounce;
+    animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+    animation-duration: 0.75s;
+    animation-iteration-count: 1;
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(1, 1) translateY(0);
+    }
+
+    10% {
+        transform: scale(1.1, 0.9) translateY(0);
+    }
+
+    30% {
+        transform: scale(0.9, 1.1) translateY(-30px);
+    }
+
+    50% {
+        transform: scale(1.05, 0.95) translateY(0);
+    }
+
+    57% {
+        transform: scale(1, 1) translateY(-7px);
+    }
+
+    64% {
+        transform: scale(1, 1) translateY(0);
+    }
+
+    100% {
+        transform: scale(1, 1) translateY(0);
+    }
+}

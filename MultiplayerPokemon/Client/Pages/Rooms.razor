@@ -5,12 +5,17 @@
 
 <h3>Rooms</h3>
 
+<div class="room-list-wrapper">
+    @foreach(var room in roomData)
+    {
+        <div @onclick="() => HandleOnRoomConnect(room.Name)">
+            <h1>@room.Name</h1>
+            <h2>Users Connected: @room.UsersConnected</h2>
+        </div>
+    }
+</div>
+
 <form @onsubmit="HandleAddRoom">
     <input type="text" @bind-value="newRoomName" ></input >
     <button type="submit">Create Room</button>
-</form>
-
-<form @onsubmit="HandleOnRoomConnect">
-    <input type="text" @bind-value="roomName" ></input >
-    <button type="submit">Connect To Room</button>
 </form>

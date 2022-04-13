@@ -71,16 +71,23 @@ namespace MultiplayerPokemon.Server.Helpers
         {
             if (CurrentlyConnectedUsers.TryGetValue(connectionId, out UserModel? user))
             {
+                bool anyRemainingConnections = true;
                 if (UserConnectionsPerRoom.ContainsKey(roomName))
                 {
                     UserConnectionsPerRoom[roomName].Single(r => r.UserId == user.Id).ConnectionIds.RemoveAll(c => c == connectionId);
-                    bool returnResult = !UserConnectionsPerRoom[roomName].Single(r => r.UserId == user.Id).ConnectionIds.Any();
-                    if (returnResult)
+                    anyRemainingConnections = UserConnectionsPerRoom[roomName].Single(r => r.UserId == user.Id).ConnectionIds.Any();
+                    if (!anyRemainingConnections)
                     {
                         UserConnectionsPerRoom[roomName].RemoveAll(r => r.UserId == user.Id);
+                        if (!UserConnectionsPerRoom[roomName].Any())
+                        {
+                            UserConnectionsPerRoom.Remove(roomName);
+                        }
                     }
-                    return returnResult;
                 }
+
+                CurrentlyConnectedUsers.Remove(connectionId);
+                return anyRemainingConnections;
             }
 
             return false;
@@ -101,7 +108,7 @@ namespace MultiplayerPokemon.Server.Helpers
 
         public string GetUsersConnectedRoom(int userId)
         {
-            return UserConnectionsPerRoom.First(room => room.Value.Any(ucpp => ucpp.UserId == userId)).Key;
+            return UserConnectionsPerRoom.FirstOrDefault(room => room.Value.Any(ucpp => ucpp.UserId == userId)).Key;
         }
 
         public IEnumerable<string> GetAllAssociatedConnectionIds(string connectionId)
