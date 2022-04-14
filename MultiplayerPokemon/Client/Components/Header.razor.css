@@ -1,0 +1,131 @@
+﻿h2{
+    margin-bottom: 0em;
+    font-size: large;
+}
+
+h4{
+    margin-top: 0em;
+}
+.main-header-wrapper{
+    display: flex;
+    margin-top: 3.2vh;
+    height: 100vh;
+    width: 1em;
+    background-color: #121212;
+    box-shadow: 0px 0px 20px black;
+}
+
+.header-left-border {
+    height: 100%;
+    display: flex;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #212121;
+}
+
+.header-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 1em;
+}
+
+.header-body-high {
+    display: flex;
+    flex-direction: column;
+    width: 20em;
+    flex: 1;
+}
+
+.header-body-low {
+    display: flex;
+    align-items: flex-end;
+    width: 20em;
+    flex: 1;
+    margin-bottom: 1em;
+}
+
+.header-option-buttons{
+    display: flex;
+    width: 11em;
+    justify-content: space-between;
+}
+
+.button-alert{
+    background-color: indianred;
+    color: white;
+}
+
+.rotate {
+    animation-name: rotate;
+    animation-timing-function: cubic-bezier();
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.unrotate {
+    animation-name: unrotate;
+    animation-timing-function: cubic-bezier();
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+
+.expand {
+    animation-name: expand;
+    animation-timing-function: cubic-bezier();
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.unexpand {
+    animation-name: unexpand;
+    animation-timing-function: cubic-bezier();
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes unrotate {
+    0% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes expand {
+    0% {
+        width: 1em;
+    }
+
+    100% {
+        width: 20vw;
+    }
+}
+
+@keyframes unexpand {
+    0% {
+        width: 20vw;
+    }
+
+    100% {
+        width: 1em;
+    }
+}

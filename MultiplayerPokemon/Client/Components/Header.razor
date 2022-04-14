@@ -1,0 +1,22 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<div class="main-header-wrapper @expandClass">
+    <div class="header-left-border" @onclick="ToggleExpand">
+        <i class="bi bi-arrow-bar-left @rotateClass" style="color: white"></i>
+    </div>
+    <div class="header-body">
+        <div class="header-body-high">
+            <h2>Pokemon Party Tool</h2>
+            <h4>Developed by Luke Lauter</h4>
+        </div>
+        <div class="header-body-low">
+            <div class="header-option-buttons">
+                <button type="button" class="button-alert" @onclick="HandleLogOut">Log Out</button>
+                @if (!string.IsNullOrEmpty(RoomState.Value?.RoomName))
+                {
+                    <button type="button" @onclick="HandleLeaveRoom">Leave Room</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

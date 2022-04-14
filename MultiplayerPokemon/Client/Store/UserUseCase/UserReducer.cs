@@ -11,5 +11,9 @@ namespace MultiplayerPokemon.Client.Store.UserUseCase
                     previousState: state,
                     user: action.User
                 );
+
+        [ReducerMethod(typeof(RemoveUserAction))]
+        public static UserState RemoveUserAction(UserState state) =>
+            new UserState();
     }
 }

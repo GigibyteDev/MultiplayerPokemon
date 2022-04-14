@@ -1,0 +1,14 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<div class="body-wrapper">
+    @if (string.IsNullOrWhiteSpace(RoomState.Value?.RoomName))
+    {
+        <div class="rooms-component-wrapper">
+            <Rooms />
+        </div>
+    }
+    else
+    {
+        <Room />
+    }
+</div>

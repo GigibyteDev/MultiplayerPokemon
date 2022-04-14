@@ -36,6 +36,10 @@ namespace MultiplayerPokemon.Client.Store.SignalRConnectionUseCase
                     response: action.Message
                 );
 
-        
+        [ReducerMethod(typeof(CloseConnectionAction))]
+        public static ConnectionState CloseConnectionAction(ConnectionState state)
+        {
+            return new ConnectionState();
+        }
     }
 }

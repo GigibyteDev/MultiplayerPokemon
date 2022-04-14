@@ -127,6 +127,16 @@ namespace MultiplayerPokemon.Server.Helpers
             return new List<string>() { connectionId };
         }
 
+        public bool RemoveUserFromRoom(string roomName, int userId)
+        {
+            if (UserConnectionsPerRoom.TryGetValue(roomName, out List<UserConnectionLookup>? userConnections))
+            {
+                userConnections.RemoveAll(uc => uc.UserId == userId);
+                return true;
+            }
+            return false;
+        }
+
         
         private class UserConnectionLookup
         {

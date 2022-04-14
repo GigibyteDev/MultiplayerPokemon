@@ -32,16 +32,6 @@ namespace MultiplayerPokemon.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            if (AuthStateProvider is not null)
-            {
-                var context = await AuthStateProvider.GetAuthenticationStateAsync();
-
-                if (Dispatcher is not null && context is not null)
-                {
-                    Dispatcher.Dispatch(new ConnectionConnectEffect(UserState.Value.User, StateHasChanged));
-                }
-            }
-
             var result = await Http.GetFromJsonAsync<IEnumerable<RoomData>>("GetRoomListData");
 
             roomData = result?.ToList() ?? new List<RoomData>();

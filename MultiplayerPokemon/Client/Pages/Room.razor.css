@@ -46,8 +46,6 @@
 
 .main-room-wrapper {
     display: flex;
-    min-width: 80em;
-    min-height: 28em;
     width: 80vw;
     height: 80vh;
     overflow: hidden;
@@ -158,3 +156,4 @@
     text-align: left;
     padding: 5px;
 }
+
