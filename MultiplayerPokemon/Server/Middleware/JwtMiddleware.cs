@@ -1,4 +1,5 @@
-﻿using MultiplayerPokemon.Server.Repositories.Interfaces;
+﻿using Microsoft.IdentityModel.Tokens;
+using MultiplayerPokemon.Server.Repositories.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace MultiplayerPokemon.Server.Middleware
@@ -23,9 +24,11 @@ namespace MultiplayerPokemon.Server.Middleware
 
         private async Task AttachUserToContext(HttpContext context, IUserRepository userRepo, string token)
         {
-            var jwtToken = (JwtSecurityToken?)userRepo.AuthorizeToken(token);
+            bool tokenValidated = userRepo.AuthorizeToken(token, out SecurityToken? securityToken);
 
-            if (jwtToken is not null)
+            var jwtToken = (JwtSecurityToken?)securityToken;
+
+            if (jwtToken is not null && tokenValidated)
             {
                 string username = jwtToken.Claims.First(x => x.Type == "unique_name").Value;
                 context.Items["User"] = await userRepo.GetUserByUsername(username);

@@ -10,6 +10,6 @@ namespace MultiplayerPokemon.Server.Repositories.Interfaces
         Task<RegisterResult> Register(RegisterRequest request);
         Task<LoginResult> Login(LoginRequest request);
         Task<User?> GetUserByUsername(string username);
-        SecurityToken? AuthorizeToken(string token);
+        bool AuthorizeToken(string token, out SecurityToken? securityToken);
     }
 }

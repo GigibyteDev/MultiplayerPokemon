@@ -34,14 +34,14 @@ h4{
 .header-body-high {
     display: flex;
     flex-direction: column;
-    width: 20em;
+    width: 22em;
     flex: 1;
 }
 
 .header-body-low {
     display: flex;
     align-items: flex-end;
-    width: 20em;
+    width: 22em;
     flex: 1;
     margin-bottom: 1em;
 }

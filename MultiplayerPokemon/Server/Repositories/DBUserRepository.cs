@@ -8,8 +8,8 @@ namespace MultiplayerPokemon.Server.Repositories
 {
     // To be utilized to persist user login information in a database
     public class DBUserRepository : IUserRepository
-    {
-        public SecurityToken? AuthorizeToken(string token)
+    { 
+        public bool AuthorizeToken(string token, out SecurityToken? securityToken)
         {
             throw new NotImplementedException();
         }

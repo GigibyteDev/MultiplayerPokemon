@@ -1,4 +1,5 @@
-﻿using MultiplayerPokemon.Server.Orchestrators.Interfaces;
+﻿using Microsoft.IdentityModel.Tokens;
+using MultiplayerPokemon.Server.Orchestrators.Interfaces;
 using MultiplayerPokemon.Server.Repositories.Interfaces;
 using MultiplayerPokemon.Shared.Dtos;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,17 +15,19 @@ namespace MultiplayerPokemon.Server.Orchestrators
             userRepo = _userRepo;
         }
 
-        public TokenValidationResult IsAuthorized(TokenValidationRequest request)
+        public Shared.Dtos.TokenValidationResult IsAuthorized(TokenValidationRequest request)
         {
-            var securityToken = (JwtSecurityToken?)userRepo.AuthorizeToken(request.Token);
+            bool tokenValidated = userRepo.AuthorizeToken(request.Token, out SecurityToken? securityToken);
 
-            if (securityToken is not null)
-                return new TokenValidationResult
+            var jwtSecurityToken = (JwtSecurityToken?)securityToken;
+
+            if (jwtSecurityToken is not null && tokenValidated)
+                return new Shared.Dtos.TokenValidationResult
                 {
                     IsValidToken = true
                 };
 
-            return new TokenValidationResult
+            return new Shared.Dtos.TokenValidationResult
             {
                 IsValidToken = false
             };

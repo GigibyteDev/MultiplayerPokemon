@@ -3,6 +3,7 @@ using MultiplayerPokemon.Server.Models;
 using MultiplayerPokemon.Server.Repositories.Interfaces;
 using MultiplayerPokemon.Server.Services.Interfaces;
 using MultiplayerPokemon.Shared.Dtos;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace MultiplayerPokemon.Server.Repositories
 {
@@ -30,9 +31,27 @@ namespace MultiplayerPokemon.Server.Repositories
             };
             tokenService = _tokenService;
         }
-        public SecurityToken? AuthorizeToken(string token)
+        public bool AuthorizeToken(string token, out SecurityToken? securityToken)
         {
-            return tokenService.AuthorizeToken(token);
+            securityToken = tokenService.AuthorizeToken(token);
+            bool userValidated = false;
+
+            var jwtToken = (JwtSecurityToken?)securityToken;
+            if (jwtToken is not null)
+            {
+                var claim = jwtToken.Claims.First(c => c.Type == "unique_name");
+                if (claim is not null)
+                {
+                    userValidated = users.Any(u => u.Username.ToLower().Trim() == claim.Value.ToLower().Trim());
+                }
+            }
+
+            if (userValidated)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<User?> GetUserByUsername(string username)
