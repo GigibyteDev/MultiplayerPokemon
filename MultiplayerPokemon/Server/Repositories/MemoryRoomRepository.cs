@@ -51,7 +51,7 @@ namespace MultiplayerPokemon.Server.Repositories
             return null;
         }
 
-        public async Task<bool> AddUserToRoom(string connectionId, UserModel user, string roomName)
+        public async Task<bool> AddUserToRoom(UserModel user, string roomName)
         {
             if (GetRoomIfExists(roomName, out RoomModel room))
             {

@@ -12,7 +12,7 @@ namespace MultiplayerPokemon.Server.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> AddUserToRoom(string connectionId, UserModel user, string roomName)
+        public Task<bool> AddUserToRoom(UserModel user, string roomName)
         {
             throw new NotImplementedException();
         }

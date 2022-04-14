@@ -95,6 +95,14 @@
 .stat-item-label {
     font-size: large;
     font-weight: bold;
+    text-align: center;
+}
+
+.stat-item-value-secondary {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 100%;
 }
 
 .stat-item {
@@ -102,7 +110,7 @@
     flex-direction: column;
     align-items: center;
     margin: 10px;
-    width: 75px;
+    width: 50px;
 }
 
 .image-and-controls {

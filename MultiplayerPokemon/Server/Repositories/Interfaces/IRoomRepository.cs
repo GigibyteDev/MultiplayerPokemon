@@ -7,7 +7,7 @@ namespace MultiplayerPokemon.Server.Repositories.Interfaces
     {
         Task<CreateRoomResult> CreateRoom(CreateRoomRequest request);
         Task<RoomModel?> GetRoomByRoomName(string roomName);
-        Task<bool> AddUserToRoom(string connectionId, UserModel user, string roomName);
+        Task<bool> AddUserToRoom(UserModel user, string roomName);
         Task<RoomModel?> GetUserRoomIfConnected(UserModel user);
         Task<bool> RemoveUserFromRoom(UserModel user, string roomName);
         Task<IEnumerable<string>> ForceRemoveUserFromAnyRoom(UserModel user);

@@ -31,10 +31,10 @@ namespace MultiplayerPokemon.Server.Hubs
                 connectionManager.AddUserConnection(Context.ConnectionId, user);
                 await InvokeTestRoomHubConnection(user);
 
-                var previouslyConnectedRoom = connectionManager.GetUsersConnectedRoom(user.Id);
-                if (!string.IsNullOrWhiteSpace(previouslyConnectedRoom))
+                var previouslyConnectedRoom = await roomOrchestrator.GetUserRoomIfConnected(user);
+                if (previouslyConnectedRoom is not null)
                 {
-                    await SilentConnectToRoom(previouslyConnectedRoom, Context.ConnectionId);
+                    await SilentConnectToRoom(previouslyConnectedRoom.RoomName, Context.ConnectionId);
                 }
             }
         }
@@ -50,7 +50,7 @@ namespace MultiplayerPokemon.Server.Hubs
                     {
                         var connectionMessage = new MessageModel { User = ChatBot, MessageText = $"User {user.Username} has joined the room", SentDate = DateTime.Now };
                         await roomOrchestrator.AddMessageToRoom(connectionMessage, roomName);
-                        await roomOrchestrator.AddUserToRoom(Context.ConnectionId, user, roomName);
+                        await roomOrchestrator.AddUserToRoom(user, roomName);
                         await InvokeGetConnectedRoomInfo(room, Context.ConnectionId);
                         foreach(var prevUserConnectionId in connectionManager.GetAllAssociatedConnectionIds(Context.ConnectionId))
                         {

@@ -38,9 +38,9 @@ namespace MultiplayerPokemon.Server.Orchestrators
             return null;
         }
 
-        public async Task<bool> AddUserToRoom(string connectionId, UserModel user, string roomName)
+        public async Task<bool> AddUserToRoom(UserModel user, string roomName)
         {
-            return await roomRepository.AddUserToRoom(connectionId, user, roomName);
+            return await roomRepository.AddUserToRoom(user, roomName);
         }
 
         public async Task<RoomModel?> GetUserRoomIfConnected(UserModel user)
