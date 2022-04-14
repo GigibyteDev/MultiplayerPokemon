@@ -1,5 +1,6 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.SignalR.Client;
+using MultiplayerPokemon.Client.Models;
 using MultiplayerPokemon.Client.Settings;
 using MultiplayerPokemon.Client.Store.RoomUseCase.RoomActions;
 using MultiplayerPokemon.Client.Store.SignalRConnectionUseCase.ConnectionActions;
@@ -34,7 +35,11 @@ namespace MultiplayerPokemon.Client.Store.SignalRConnectionUseCase
                 connection.On<RoomModel>("GetConnectedRoomInfo", (room) =>
                 {
                     Console.WriteLine($"Connected To Room: { room.RoomName}" );
-                    dispatcher.Dispatch(new ConnectedToRoomAction(room));
+                    /*
+                     * TODO: Logic for generating Pokemon Cards in party 
+                     */
+                    List<PartyCardModel> partyCards = new List<PartyCardModel>() { new PartyCardModel { Name = "Test Pikachu" } };
+                    dispatcher.Dispatch(new ConnectedToRoomAction(room, new RoomPartyModel(partyCards)));
                     action.UpdateState();
                 });
 

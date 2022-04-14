@@ -1,4 +1,5 @@
-﻿using MultiplayerPokemon.Shared.Models;
+﻿using MultiplayerPokemon.Client.Models;
+using MultiplayerPokemon.Shared.Models;
 
 namespace MultiplayerPokemon.Client.Store.RoomUseCase.RoomActions
 {
@@ -6,9 +7,12 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase.RoomActions
     {
         public RoomModel RoomModel { get; set; }
 
-        public ConnectedToRoomAction(RoomModel roomModel)
+        public RoomPartyModel PartyModel { get; set; }
+
+        public ConnectedToRoomAction(RoomModel roomModel, RoomPartyModel partyModel)
         {
             RoomModel = roomModel;
+            PartyModel = partyModel;
         }
     }
 }

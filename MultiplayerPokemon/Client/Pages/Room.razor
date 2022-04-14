@@ -74,7 +74,10 @@
                 else
                 {
                     <div class="pokemon-party-wrapper">
-                        Howdy B)
+                        @foreach(var partyCard in RoomState.Value.PokemonParty.Cards)
+                        {
+                            <div>@partyCard.Name</div>
+                        }
                     </div>  
                 }
             </div>

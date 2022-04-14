@@ -8,7 +8,7 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
         [ReducerMethod]
         public static RoomState ConnectedToRoomAction(RoomState state, ConnectedToRoomAction action)
         {
-            return new RoomState(action.RoomModel);
+            return new RoomState(action.RoomModel, action.PartyModel);
         }
 
         [ReducerMethod]

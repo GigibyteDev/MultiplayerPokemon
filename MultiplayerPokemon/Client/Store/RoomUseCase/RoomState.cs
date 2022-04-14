@@ -1,4 +1,5 @@
 ﻿using Fluxor;
+using MultiplayerPokemon.Client.Models;
 using MultiplayerPokemon.Shared.Models;
 
 namespace MultiplayerPokemon.Client.Store.RoomUseCase
@@ -12,7 +13,7 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
         public List<UserModel> CurrentUsers { get; set; }
         public List<UserModel> UserHistory { get; set; }
         public ChatModel Chat { get; set; }
-        public PartyModel PokemonParty { get; set; }
+        public RoomPartyModel PokemonParty { get; set; }
 
         public RoomState()
         {
@@ -22,10 +23,10 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             CurrentUsers = new List<UserModel>();
             UserHistory = new List<UserModel>();
             Chat = new ChatModel();
-            PokemonParty = new PartyModel();
+            PokemonParty = new RoomPartyModel(new List<PartyCardModel>());
         }
 
-        public RoomState(RoomModel model)
+        public RoomState(RoomModel model, RoomPartyModel roomPartyModel)
         {
             RoomName = model.RoomName;
             CreatorUsername = model.CreatorUsername;
@@ -33,7 +34,7 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             CurrentUsers = model.CurrentUsers;
             UserHistory = model.UserHistory;
             Chat = model.Chat;
-            PokemonParty = model.PokemonParty;
+            PokemonParty = roomPartyModel;
         }
 
         public RoomState(
@@ -44,7 +45,7 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             List<UserModel>? currentUsers = null, 
             List<UserModel>? userHistory = null, 
             ChatModel? chat = null, 
-            PartyModel? pokemonParty = null
+            RoomPartyModel? pokemonParty = null
             )
         {
             RoomName = roomName ?? previousState.RoomName;

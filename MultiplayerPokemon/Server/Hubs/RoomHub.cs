@@ -146,11 +146,6 @@ namespace MultiplayerPokemon.Server.Hubs
             }
         }
 
-        private async Task InvokeDisconnectFromRoom(string connectionId)
-        {
-            await Clients.Client(connectionId).SendAsync("DisconnectUserFromRoom");
-        }
-
         private async Task InvokeDisconnectFromRoom(IEnumerable<string> connectionIds)
         {
             await Clients.Clients(connectionIds).SendAsync("DisconnectUserFromRoom");
