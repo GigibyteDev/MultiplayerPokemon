@@ -30,9 +30,16 @@
                 @if (roomTabToggle)
                 {
                     <div class="pokemon-search-wrapper">
-                        @*<input type="text" @bind-value="pokemonId"></input>*@
-                        <form @onsubmit="() => HandleGetPokemon()" class="pokemon-search-form">
-                            <BlazoredTypeahead SearchMethod="SearchPokemon" @bind-Value="pokemonId">
+                        <div class="pokemon-search-form" @onsubmit="() => HandleGetPokemon()">
+                            <BlazoredTypeahead 
+                                SearchMethod="SearchPokemon" 
+                                TValue="string" 
+                                TItem="string" 
+                                Value="pokemonId" 
+                                ValueChanged="HandleGetPokemon" 
+                                ValueExpression="@(() => pokemonId)" 
+                                placeholder="Search by name..."
+                            >
                                 <SelectedTemplate>
                                     <div class="typeahead-search-wrapper">
                                         @context
@@ -44,11 +51,20 @@
                                     </div>
                                 </ResultTemplate>
                                 <NotFoundTemplate>
-                                    No Pokemon Found!
+                                    <div class="typeahead-result-wrapper">
+                                        No Pokemon Found!
+                                    </div>
                                 </NotFoundTemplate>
                             </BlazoredTypeahead>
-                            <button type="submit">Search Pokemon</button>
-                        </form>
+                            @if (searchedPokemon is not null && searchedPokemon.Id < 10000)
+                            {
+                                <button type="button" class="submit-button-active">Add To Party</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="submit-button">Add To Party</button>
+                            }
+                            </div>
                         @if (searchedPokemon is not null)
                         {
                             <PokemonData PokemonModel="@searchedPokemon" GetPokemon="@HandleGetPokemon" />
@@ -58,7 +74,7 @@
                 else
                 {
                     <div class="pokemon-party-wrapper">
-
+                        Howdy B)
                     </div>  
                 }
             </div>

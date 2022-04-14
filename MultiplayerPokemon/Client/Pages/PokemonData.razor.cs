@@ -37,6 +37,21 @@ namespace MultiplayerPokemon.Client.Pages
         private bool IsFront { get; set; } = true;
         private bool IsShiny { get; set; } = false;
         private string ImgUri { get; set; } = string.Empty;
+        private string PokemonSelectedDescription { get; set; }
+        private string pokemonSelectedGameValue = string.Empty;
+        private string PokemonSelectedGame
+        {
+            get
+            {
+                return pokemonSelectedGameValue;
+            }
+
+            set
+            {
+                pokemonSelectedGameValue = value;
+                SetDescription();
+            }
+        }
 
         private  bool CanFlip
         {
@@ -47,6 +62,12 @@ namespace MultiplayerPokemon.Client.Pages
         {
             IsShiny = !IsShiny;
             UpdateImageURI();
+        }
+
+        private void SetDescription()
+        {
+            if (PokemonModel is not null)
+                PokemonSelectedDescription = PokemonModel.FlavorTexts.Where(texts => texts.Version == pokemonSelectedGameValue).First().FlavorText;
         }
 
         private async void HandleFlipSet()
@@ -204,6 +225,16 @@ namespace MultiplayerPokemon.Client.Pages
             UpdateImageURI();
 
             pokemonAltDropdown = PokemonModel?.Name ?? string.Empty;
+
+            if (PokemonModel is not null)
+                if (!string.IsNullOrWhiteSpace(PokemonSelectedGame) && PokemonModel.FlavorTexts.Any(text => text.Version == PokemonSelectedGame))
+                {
+                    SetDescription();
+                }
+                else
+                {
+                    PokemonSelectedGame = PokemonModel.FlavorTexts.Last().Version;
+                }
 
             StateHasChanged();
         }

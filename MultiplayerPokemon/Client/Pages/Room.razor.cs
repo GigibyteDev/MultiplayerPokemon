@@ -34,7 +34,7 @@ namespace MultiplayerPokemon.Client.Pages
 
         private List<string> PokemonNames = new List<string>();
         private string messageText = string.Empty;
-        private string pokemonId = string.Empty;
+        private string pokemonId = "Pikachu";
         private PokemonModel? searchedPokemon;
         private bool roomTabToggle = true;
 
@@ -80,10 +80,9 @@ namespace MultiplayerPokemon.Client.Pages
         {
             if (RESTPokemonClient is not null)
             {
-                if (overridePokemonName is not null)
-                    pokemonId = overridePokemonName;
+                searchedPokemon = await RESTPokemonClient.GetPokemonById(overridePokemonName?.FromDisplayName() ?? pokemonId.FromDisplayName().ToLower());
 
-                searchedPokemon = await RESTPokemonClient.GetPokemonById(pokemonId.FromDisplayName().ToLower());
+                pokemonId = searchedPokemon?.Name.ToDisplayName() ?? pokemonId;
                 StateHasChanged();
             }
         }

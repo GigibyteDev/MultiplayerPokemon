@@ -85,7 +85,7 @@
                             <div class="stat-item-value">@(PokemonModel.Weight / 10) kg</div>
                         </div>
                         <div class="type-icon-container">
-                            @*<TypeIcons PokemonTypes=@PokemonModel.Types />*@
+                            <TypeIcons PokemonTypes=@PokemonModel.Types />
                         </div>
                         <div class="pokemon-physical-stat">
                             <div class="stat-item-label">Height</div>
@@ -93,14 +93,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="stats-collection">
-                    @foreach(var stat in PokemonModel.Stats)
-                    {
-                        <div class="stat-item">
-                            <div class="stat-item-label">@stat.Name</div>
-                            <div class="stat-item-value">@stat.Base</div>
-                        </div>
-                    }
+        </div>
+        <div class="pokemon-flavor-text-wrapper">
+            <select @bind="PokemonSelectedGame" name="flavorTexts" id="flavorTexts" class="flavor-text-select">
+                @foreach(var text in PokemonModel.FlavorTexts)
+                {
+                    <option selected="@(PokemonSelectedGame == text.Version)" value=@text.Version>@text.Version.ToDisplayName()</option>
+                }
+            </select>
+            <div>
+                <span>@PokemonSelectedDescription</span>
+            </div>
+            <div class="stats-collection">
+                @foreach(var stat in PokemonModel.Stats)
+                {
+                    <div class="stat-item">
+                        <div class="stat-item-label">@stat.Name</div>
+                        <div class="stat-item-value">@stat.Base</div>
+                    </div>
+                }
             </div>
         </div>
     </div>

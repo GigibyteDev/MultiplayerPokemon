@@ -25,19 +25,31 @@ input {
     background-color: #757575 !important;
     color: white;
     border: none !important;
-    width: 60% !important;
+    width: 85% !important;
     margin-bottom: 10px;
 }
 
 .blazored-typeahead__input {
     text-align: center !important;
+    width: 100% !important;
+    background-color: #9E9E9E !important;
     color: black !important;
+    font-size: x-large;
 }
 
 .blazored-typeahead__input-mask {
     text-align: center !important;
     width: 100% !important;
-    justify-content: center !important;
+    background-color: #9E9E9E !important;
+    color: black !important;
+    font-size: x-large;
+    justify-content: center;
+}
+
+.blazored-typeahead__result {
+    border-top: none !important;
+    border-bottom: none !important;
+    border: none !important;
 }
 
 #blazor-error-ui {

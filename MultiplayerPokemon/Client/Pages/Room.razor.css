@@ -90,21 +90,35 @@
     display: flex;
 }
 
+.submit-button {
+    background-color: #9E9E9E;
+    color: white;
+    height: 3.75em;
+    margin-right: 1.3em;
+    cursor: default;
+}
+
+.submit-button-active {
+    background-color: #2F4562;
+    color: white;
+    height: 3.75em;
+    margin-right: 1.3em;
+}
+
 .pokemon-search-wrapper {
     flex: 1;
 }
 
 .pokemon-search-form{
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
 }
 
 .pokemon-party-wrapper {
     flex: 1;
 }
 
-.typeahead-result-wrapper{
+.typeahead-result-wrapper {
     color: black;
     text-align: center;
 }

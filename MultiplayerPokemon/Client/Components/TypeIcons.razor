@@ -1,0 +1,6 @@
+﻿ <div class="type-icons-list">
+    @foreach(var type in PokemonTypes)
+    {
+        <img class="type-icon" style="width: @(IconSize)px" src=@(@type.ImageURI(IconSize)) alt="@type.DisplayValue" />
+    }
+</div>

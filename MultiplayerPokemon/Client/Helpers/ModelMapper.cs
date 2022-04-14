@@ -15,7 +15,7 @@ namespace MultiplayerPokemon.Client.Helpers
                 stats.Add(new PokemonStat
                 (
                     @base: stat.StatBase,
-                    name: stat.StatName?.Name ?? string.Empty
+                    name: stat.StatName?.Name?.Replace("special-", "sp ")?.Replace("attack", "atk")?.Replace("defense", "def") ?? string.Empty
                 ));
             }
 
