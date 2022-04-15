@@ -2,9 +2,9 @@
 {
     public class RoomPartyModel
     {
-        public List<PartyCardModel> Cards = new List<PartyCardModel>();
+        public Dictionary<int, PartyCardModel> Cards = new Dictionary<int, PartyCardModel>();
 
-        public RoomPartyModel(List<PartyCardModel> cards)
+        public RoomPartyModel(Dictionary<int, PartyCardModel> cards)
         {
             Cards = cards;
         }

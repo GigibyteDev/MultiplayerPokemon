@@ -1,6 +1,7 @@
 ﻿using MultiplayerPokemon.Client.Helpers;
 using MultiplayerPokemon.Client.Models;
 using MultiplayerPokemon.Client.Models.DataModels;
+using MultiplayerPokemon.Shared.Models;
 using System.Net.Http.Json;
 
 namespace MultiplayerPokemon.Client.Clients
@@ -12,6 +13,34 @@ namespace MultiplayerPokemon.Client.Clients
         public RESTPokemonClient(HttpClient _http)
         {
             http = _http;
+        }
+
+        public async Task<PartyCardModel?> GetPartyCard(string id, string gender, bool isShiny)
+        {
+            try
+            {
+                var pokemonData = await http.GetFromJsonAsync<PokemonData>($"pokemon/{id}");
+                if (pokemonData is not null)
+                    return pokemonData.MapPokemonDataToPartyCardModel(gender, isShiny);
+            }
+            catch (Exception ex)
+            {}
+
+            return null;
+        }
+
+        public async Task<RoomPartyModel> GetRoomParty(IDictionary<int, PokemonPartyDataModel> partyDataModels)
+        {
+            Dictionary<int, PartyCardModel> partyCardModels = new Dictionary<int, PartyCardModel>();
+            foreach (var partyData in partyDataModels.OrderBy(p => p.Key))
+            {
+                var partyCard = await GetPartyCard(partyData.Value.PokedexId.ToString(), partyData.Value.Gender, partyData.Value.IsShiny);
+
+                if (partyCard is not null)
+                    partyCardModels.Add(partyData.Key, partyCard);
+            }
+
+            return new RoomPartyModel(partyCardModels);
         }
 
         public async Task<PokemonModel?> GetPokemonById(string id)

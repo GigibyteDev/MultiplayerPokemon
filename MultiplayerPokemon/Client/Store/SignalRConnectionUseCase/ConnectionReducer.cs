@@ -45,5 +45,15 @@ namespace MultiplayerPokemon.Client.Store.SignalRConnectionUseCase
             }
             return new ConnectionState();
         }
+
+        [ReducerMethod(typeof(DisconnectUserFromSignalRAction))]
+        public static ConnectionState DisconnectUserFromSignalRAction(ConnectionState state)
+        {
+            if (state.Connection is not null)
+            {
+                Task.Run(() => state.Connection.DisposeAsync());
+            }
+            return new ConnectionState();
+        }
     }
 }

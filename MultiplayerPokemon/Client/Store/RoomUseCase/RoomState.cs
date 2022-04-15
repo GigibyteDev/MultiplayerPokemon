@@ -23,7 +23,7 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             CurrentUsers = new List<UserModel>();
             UserHistory = new List<UserModel>();
             Chat = new ChatModel();
-            PokemonParty = new RoomPartyModel(new List<PartyCardModel>());
+            PokemonParty = new RoomPartyModel(new Dictionary<int, PartyCardModel>());
         }
 
         public RoomState(RoomModel model, RoomPartyModel roomPartyModel)

@@ -58,7 +58,7 @@
                             </BlazoredTypeahead>
                             @if (searchedPokemon is not null && searchedPokemon.Id < 10000)
                             {
-                                <button type="button" class="submit-button-active">Add To Party</button>
+                                <button type="button" class="submit-button-active" @onclick="HandleAddPokemonToParty">Add To Party</button>
                             }
                             else
                             {
@@ -74,9 +74,9 @@
                 else
                 {
                     <div class="pokemon-party-wrapper">
-                        @foreach(var partyCard in RoomState.Value.PokemonParty.Cards)
+                        @foreach(var partyCard in RoomState.Value.PokemonParty.Cards.OrderBy(c => c.Key))
                         {
-                            <div>@partyCard.Name</div>
+                            <div>@partyCard.Value.Name</div>
                         }
                     </div>  
                 }

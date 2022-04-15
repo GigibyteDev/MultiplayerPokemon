@@ -1,5 +1,6 @@
 ﻿using MultiplayerPokemon.Server.Repositories.Interfaces;
 using MultiplayerPokemon.Shared.Dtos;
+using MultiplayerPokemon.Shared.Logic;
 using MultiplayerPokemon.Shared.Models;
 
 namespace MultiplayerPokemon.Server.Repositories
@@ -29,7 +30,7 @@ namespace MultiplayerPokemon.Server.Repositories
                 Chat = new ChatModel() { Messages = new List<MessageModel>() },
                 CurrentUsers = new List<UserModel>(),
                 UserHistory = new List<UserModel>(),
-                PokemonParty = new PartyModel { Pokemon = new List<PokemonPartyDataModel>() }
+                PokemonParty = new PartyModel()
             };
 
             Rooms.Add(newRoom);
@@ -134,6 +135,36 @@ namespace MultiplayerPokemon.Server.Repositories
             var tempRoom = Rooms.FirstOrDefault(x => x.RoomName.ToLower().Trim() == roomName.ToLower().Trim());
             room = tempRoom ?? new RoomModel();
             return tempRoom is not null;
+        }
+
+        public async Task<bool> AddPokemonToParty(PokemonPartyDataModel partyModel, string roomName)
+        {
+            if (GetRoomIfExists(roomName, out RoomModel room))
+            {
+                return room.PokemonParty.Pokemon.AddToCollection(partyModel);
+            }
+
+            return false;
+        }
+
+        public async Task<bool> SwapPokemonInParty(int originalSpot, int newSpot, string roomName)
+        {
+            if (GetRoomIfExists(roomName, out RoomModel room))
+            {
+                return room.PokemonParty.Pokemon.Swap(originalSpot, newSpot);
+            }
+
+            return false;
+        }
+
+        public async Task<bool> RemovePokemonFromParty(int position, string roomName)
+        {
+            if (GetRoomIfExists(roomName, out RoomModel room))
+            {
+                return room.PokemonParty.Pokemon.RemoveFromCollection(position);
+            }
+
+            return false;
         }
     }
 }

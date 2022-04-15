@@ -2,6 +2,11 @@
 {
     public class PartyModel
     {
-        public List<PokemonPartyDataModel> Pokemon { get; set; }
+        public Dictionary<int, PokemonPartyDataModel> Pokemon { get; set; }
+
+        public PartyModel()
+        {
+            Pokemon = new Dictionary<int, PokemonPartyDataModel>();
+        }
     }
 }

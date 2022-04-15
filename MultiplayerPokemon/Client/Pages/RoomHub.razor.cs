@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MultiplayerPokemon.Client.Store.RoomUseCase;
+using MultiplayerPokemon.Client.Store.SignalRConnectionUseCase;
 using MultiplayerPokemon.Client.Store.SignalRConnectionUseCase.Effects;
 using MultiplayerPokemon.Client.Store.UserUseCase;
 
@@ -14,6 +15,9 @@ namespace MultiplayerPokemon.Client.Pages
 
         [Inject]
         private IState<UserState> UserState { get; set; }
+
+        [Inject]
+        private IState<ConnectionState> ConnectionState { get; set; }
 
         [Inject]
         private AuthenticationStateProvider AuthState { get; set; }

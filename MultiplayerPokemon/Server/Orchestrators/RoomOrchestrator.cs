@@ -67,5 +67,20 @@ namespace MultiplayerPokemon.Server.Orchestrators
         {
             return await roomRepository.GetRoomListData();
         }
+
+        public async Task<bool> AddPokemonToParty(PokemonPartyDataModel partyModel, string roomName)
+        {
+            return await roomRepository.AddPokemonToParty(partyModel, roomName);
+        }
+
+        public async Task<bool> RemovePokemonFromParty(int position, string roomName)
+        {
+            return await roomRepository.RemovePokemonFromParty(position, roomName);
+        }
+
+        public async Task<bool> SwapPokemonInParty(int originalSpot, int newSpot, string roomName)
+        {
+            return await roomRepository.SwapPokemonInParty(originalSpot, newSpot, roomName);
+        }
     }
 }

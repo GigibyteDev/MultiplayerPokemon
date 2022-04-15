@@ -8,17 +8,6 @@ namespace MultiplayerPokemon.Client.Helpers
     {
         public static PokemonModel MapRawPokemonDataToPokemonModel(this PokemonData pokemonData, PokemonSpeciesData speciesData, PokemonFormData formData)
         {
-            List<PokemonStat> stats = new List<PokemonStat>();
-
-            foreach(var stat in pokemonData.Stats ?? new List<PokemonDataStat>())
-            {
-                stats.Add(new PokemonStat
-                (
-                    @base: stat.StatBase,
-                    name: stat.StatName?.Name?.Replace("special-", "sp ")?.Replace("attack", "atk")?.Replace("defense", "def") ?? string.Empty
-                ));
-            }
-
             List<PokemonAlt> forms = new List<PokemonAlt>();
 
             foreach (var variety in speciesData.Varieties ?? new List<PokemonSpeciesDataVariety>())
@@ -72,20 +61,13 @@ namespace MultiplayerPokemon.Client.Helpers
                     break;
             }
 
-            List<PokemonTypes> types = new List<PokemonTypes>();
-
-            foreach (var type in pokemonData.Types ?? new List<PokemonDataType>())
-            {
-                types.Add(PokemonTypes.GetPokemonTypeById(type.Type?.Name ?? string.Empty));
-            }
-
             return new PokemonModel
                (
                    id: pokemonData.Id,
                    name: pokemonData.Name,
                    sprites: AssignSprites(pokemonData.Sprites ?? new PokemonDataSprites()),
-                   stats: stats.ToList(),
-                   types: types,
+                   stats: pokemonData.Stats.GetPokemonStats(),
+                   types: pokemonData.Types.GetPokemonTypes(),
                    weight: pokemonData.Weight,
                    height: pokemonData.Height,
                    canAddToParty: !formData.IsBattleOnly,
@@ -112,6 +94,48 @@ namespace MultiplayerPokemon.Client.Helpers
                     altInfoSprites,
                     types
                 );
+        }
+
+        public static PartyCardModel MapPokemonDataToPartyCardModel(this PokemonData pokemonData, string gender, bool isShiny)
+        {
+            return new PartyCardModel
+            {
+                Id = pokemonData.Id,
+                Name = pokemonData.Name ?? string.Empty,
+                Gender = gender,
+                IsShiny = isShiny,
+                ImageURI = pokemonData.Sprites?.Other?.OfficialArtWork?.FrontDefault ?? string.Empty,
+                Stats = pokemonData.Stats.GetPokemonStats(),
+                Types = pokemonData.Types.GetPokemonTypes()
+            };
+        }
+
+        private static List<PokemonStat> GetPokemonStats(this IEnumerable<PokemonDataStat>? dataStats)
+        {
+            List<PokemonStat> stats = new List<PokemonStat>();
+
+            foreach (var stat in dataStats ?? new List<PokemonDataStat>())
+            {
+                stats.Add(new PokemonStat
+                (
+                    @base: stat.StatBase,
+                    name: stat.StatName?.Name?.Replace("special-", "sp ")?.Replace("attack", "atk")?.Replace("defense", "def") ?? string.Empty
+                ));
+            }
+
+            return stats;
+        }
+
+        private static List<PokemonTypes> GetPokemonTypes(this IEnumerable<PokemonDataType>? dataTypes)
+        {
+            List<PokemonTypes> types = new List<PokemonTypes>();
+
+            foreach (var type in dataTypes ?? new List<PokemonDataType>())
+            {
+                types.Add(PokemonTypes.GetPokemonTypeById(type.Type?.Name ?? string.Empty));
+            }
+
+            return types;
         }
 
         private static PokemonSpriteCollection AssignSprites(PokemonDataSprites sprites, string? originalDefaultSprite = null)

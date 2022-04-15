@@ -1,5 +1,6 @@
 ﻿using Fluxor;
 using MultiplayerPokemon.Client.Store.RoomUseCase.RoomActions;
+using MultiplayerPokemon.Shared.Logic;
 
 namespace MultiplayerPokemon.Client.Store.RoomUseCase
 {
@@ -61,6 +62,26 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
         public static RoomState DisconnectUserFromRoomAction(RoomState state)
         {
             return new RoomState();
+        }
+
+        [ReducerMethod]
+        public static RoomState AddPokemonToPartyAction(RoomState state, AddPokemonToPartyAction action)
+        {
+            state.PokemonParty.Cards.AddToCollection(action.PartyCardModel);
+            return new RoomState
+            (
+                previousState: state
+            );
+        }
+
+        [ReducerMethod]
+        public static RoomState PokemonSwappedAction(RoomState state, PokemonSwappedAction action)
+        {
+            state.PokemonParty.Cards.Swap(action.CurrentPosition, action.NewPosition);
+            return new RoomState
+            (
+                previousState: state
+            );
         }
     }
 }

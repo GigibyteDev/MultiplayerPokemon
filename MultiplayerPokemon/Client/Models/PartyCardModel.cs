@@ -4,7 +4,7 @@ namespace MultiplayerPokemon.Client.Models
 {
     public class PartyCardModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Gender { get; set; }
         public List<PokemonStat> Stats { get; set; }

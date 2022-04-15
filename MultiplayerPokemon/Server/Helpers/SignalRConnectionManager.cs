@@ -18,14 +18,18 @@ namespace MultiplayerPokemon.Server.Helpers
             return CurrentlyConnectedUsers.Where(ccu => userModels.Select(um => um.Id).Contains(ccu.Value.Id)).Select(ccu => ccu.Key);
         }
 
-        public bool AddUserConnection(string connectionId, UserModel user)
+        public string? AddUserConnection(string connectionId, UserModel user)
         {
             if (!CurrentlyConnectedUsers.ContainsKey(connectionId))
             {
                 CurrentlyConnectedUsers.Add(connectionId, user);
-                return true;
+                
+                if (CurrentlyConnectedUsers.Where(x => x.Value.Id == user.Id).Count() > 3)
+                {
+                    return CurrentlyConnectedUsers.First(x => x.Value.Id == user.Id).Key;
+                }
             }
-            return false;
+            return null;
         }
 
         public bool RemoveUserConnection(string connectionId)

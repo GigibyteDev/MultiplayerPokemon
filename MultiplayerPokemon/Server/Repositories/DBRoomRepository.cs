@@ -12,6 +12,11 @@ namespace MultiplayerPokemon.Server.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<bool> AddPokemonToParty(PokemonPartyDataModel partyModel, string roomName)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> AddUserToRoom(UserModel user, string roomName)
         {
             throw new NotImplementedException();
@@ -42,7 +47,17 @@ namespace MultiplayerPokemon.Server.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<bool> RemovePokemonFromParty(int position, string roomName)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> RemoveUserFromRoom(UserModel user, string roomName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> SwapPokemonInParty(int originalSpot, int newSpot, string roomName)
         {
             throw new NotImplementedException();
         }

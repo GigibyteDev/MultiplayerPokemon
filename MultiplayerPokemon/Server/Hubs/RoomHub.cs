@@ -28,7 +28,13 @@ namespace MultiplayerPokemon.Server.Hubs
             var user = await roomOrchestrator.GetUserByUsername(username);
             if (user is not null)
             {
-                connectionManager.AddUserConnection(Context.ConnectionId, user);
+                string? connectionToDisconnect = connectionManager.AddUserConnection(Context.ConnectionId, user);
+
+                if (connectionToDisconnect is not null)
+                {
+                    await InvokeDisconnectUserFromSignalR(connectionToDisconnect);
+                }
+
                 await InvokeTestRoomHubConnection(user);
 
                 var previouslyConnectedRoom = await roomOrchestrator.GetUserRoomIfConnected(user);
@@ -146,9 +152,37 @@ namespace MultiplayerPokemon.Server.Hubs
             }
         }
 
+        public async Task AddPokemonToParty(PokemonPartyDataModel partyData, string roomName)
+        {
+            await roomOrchestrator.AddPokemonToParty(partyData, roomName);
+            await InvokePokemonAddedToParty(partyData, roomName);
+        }
+
+        public async Task RemovePokemonFromParty(int position, string roomName)
+        {
+            await roomOrchestrator.RemovePokemonFromParty(position, roomName);
+            await InvokeRemovePokemonFromParty(position, roomName);
+        }
+
+        public async Task SwapPokemon(int currentPos, int newPos, string RoomName)
+        {
+            await roomOrchestrator.SwapPokemonInParty(currentPos, newPos, RoomName);
+            await InvokePokemonSwapped(currentPos, newPos, RoomName);
+        }
+
+        private async Task InvokeRemovePokemonFromParty(int position, string roomName)
+        {
+            await Clients.OthersInGroup(roomName).SendAsync("RemovePokemonFromParty", position);
+        }
+
         private async Task InvokeDisconnectFromRoom(IEnumerable<string> connectionIds)
         {
             await Clients.Clients(connectionIds).SendAsync("DisconnectUserFromRoom");
+        }
+
+        private async Task InvokeDisconnectUserFromSignalR(string connectionId)
+        {
+            await Clients.Client(connectionId).SendAsync("DisconnectUserFromSignalR");
         }
 
         private async Task HandleSendDisconnectMessage(UserModel user, string roomName)
@@ -165,6 +199,16 @@ namespace MultiplayerPokemon.Server.Hubs
                 await roomOrchestrator.AddMessageToRoom(disconnectedMessage, roomName);
                 await Clients.OthersInGroup(room.RoomName).SendAsync("UserDisconnectedFromRoom", user.Username, disconnectedMessage);
             }
+        }
+
+        private async Task InvokePokemonAddedToParty(PokemonPartyDataModel pokemonData, string roomName)
+        {
+            await Clients.OthersInGroup(roomName).SendAsync("PokemonAddedToParty", pokemonData);
+        }
+
+        private async Task InvokePokemonSwapped(int currentPos, int newPos, string roomName)
+        {
+            await Clients.OthersInGroup(roomName).SendAsync("PokemonSwapped", currentPos, newPos);
         }
 
         private async Task InvokeMessageSentToRoom(MessageModel message, RoomModel room)

@@ -1,6 +1,6 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.SignalR.Client;
-using MultiplayerPokemon.Client.Models;
+using MultiplayerPokemon.Client.Clients;
 using MultiplayerPokemon.Client.Settings;
 using MultiplayerPokemon.Client.Store.RoomUseCase.RoomActions;
 using MultiplayerPokemon.Client.Store.SignalRConnectionUseCase.ConnectionActions;
@@ -11,6 +11,12 @@ namespace MultiplayerPokemon.Client.Store.SignalRConnectionUseCase
 {
     public class ConnectionEffectsHandler
     {
+        private readonly RESTPokemonClient pokemonClient;
+        public ConnectionEffectsHandler(RESTPokemonClient pokemonClient)
+        {
+            this.pokemonClient = pokemonClient;
+        }
+
         [EffectMethod]
         public async Task HandleConnectionConnect(ConnectionConnectEffect action, IDispatcher dispatcher)
         {
@@ -32,14 +38,27 @@ namespace MultiplayerPokemon.Client.Store.SignalRConnectionUseCase
                     action.UpdateState();
                 });
 
-                connection.On<RoomModel>("GetConnectedRoomInfo", (room) =>
+                connection.On<RoomModel>("GetConnectedRoomInfo", async (room) =>
                 {
                     Console.WriteLine($"Connected To Room: { room.RoomName}" );
-                    /*
-                     * TODO: Logic for generating Pokemon Cards in party 
-                     */
-                    List<PartyCardModel> partyCards = new List<PartyCardModel>() { new PartyCardModel { Name = "Test Pikachu" } };
-                    dispatcher.Dispatch(new ConnectedToRoomAction(room, new RoomPartyModel(partyCards)));
+                    var roomParty = await pokemonClient.GetRoomParty(room.PokemonParty.Pokemon);
+                    dispatcher.Dispatch(new ConnectedToRoomAction(room, roomParty));
+                    action.UpdateState();
+                });
+
+                connection.On<PokemonPartyDataModel>("PokemonAddedToParty", async (partyData) =>
+                {
+                    Console.WriteLine($"Adding pokemon with id {partyData.PokedexId} to party");
+                    var partyPokemonData = await pokemonClient.GetPartyCard(partyData.PokedexId.ToString(), partyData.Gender, partyData.IsShiny);
+                    if (partyPokemonData is not null)
+                        dispatcher.Dispatch(new AddPokemonToPartyAction(partyPokemonData));
+                    action.UpdateState();
+                });
+
+                connection.On<int, int>("PokemonSwapped", (currentPos, newPos) =>
+                {
+                    Console.WriteLine($"Swapping Pokemon in current position {currentPos} to {newPos}");
+                    dispatcher.Dispatch(new PokemonSwappedAction(currentPos, newPos));
                     action.UpdateState();
                 });
 
@@ -67,6 +86,13 @@ namespace MultiplayerPokemon.Client.Store.SignalRConnectionUseCase
                 connection.On("DisconnectUserFromRoom", () => {
                     Console.WriteLine("Forcibly Removing User From Current Room");
                     dispatcher.Dispatch(new DisconnectUserFromRoomAction());
+                    action.UpdateState();
+                });
+
+                connection.On("DisconnectUserFromSignalR", () =>
+                {
+                    Console.WriteLine("Disconnecting User From SignalR Connection...");
+                    dispatcher.Dispatch(new DisconnectUserFromSignalRAction());
                     action.UpdateState();
                 });
 

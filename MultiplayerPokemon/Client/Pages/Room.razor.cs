@@ -87,6 +87,37 @@ namespace MultiplayerPokemon.Client.Pages
             }
         }
 
+        private async void HandleAddPokemonToParty()
+        {
+            if (searchedPokemon is not null)
+            {
+                if (ConnectionState.Value?.Connection is not null && RoomState.Value is not null)
+                {
+                    await ConnectionState.Value.Connection.SendCoreAsync("AddPokemonToParty", new object[] 
+                    { 
+                        new PokemonPartyDataModel 
+                        { 
+                            PokedexId = searchedPokemon.Id, 
+                            Gender = "male", 
+                            IsShiny = false 
+                        },
+                        RoomState.Value.RoomName
+                    });
+                }
+
+                Dispatcher.Dispatch(new AddPokemonToPartyAction(new PartyCardModel
+                {
+                    Id = searchedPokemon.Id,
+                    Name = searchedPokemon.Name,
+                    Gender = "male",
+                    IsShiny = false,
+                    ImageURI = searchedPokemon.Sprites.OfficialArtwork,
+                    Stats = searchedPokemon.Stats,
+                    Types = searchedPokemon.Types
+                }));
+            }
+        }
+
         private async Task<IEnumerable<string>> SearchPokemon(string searchText)
         {
             return await Task.FromResult(PokemonNames.Where(p => p.ToLower().Contains(searchText.ToLower())).ToList());
