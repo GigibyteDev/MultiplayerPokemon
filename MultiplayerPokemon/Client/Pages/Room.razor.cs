@@ -32,12 +32,10 @@ namespace MultiplayerPokemon.Client.Pages
         private IState<PokemonSearchDataState> SearchDataState { get; set; }
 
 
-        private List<string> PokemonNames = new List<string>();
         private string messageText = string.Empty;
         private string pokemonId = "Pikachu";
         private bool roomTabToggle = true;
-        private Dictionary<int, string[]> partyHoverClasses;
-        private int lastHover = -1;
+        private int currentlyHoveringCardId = -1;
         private void ToggleToSearch()
         {
             roomTabToggle = true;
@@ -46,17 +44,17 @@ namespace MultiplayerPokemon.Client.Pages
         private void ToggleToParty()
         {
             roomTabToggle = false;
-            ResetPartyHoverClasses();
         }
 
         private void UpdatePokemonName(string pokemonName)
         {
-            pokemonId = pokemonName;
+            pokemonId = pokemonName.ToDisplayName();
+            StateHasChanged();
         }
 
         private async void HandleSendMessage()
         {
-            if (Dispatcher is not null && RoomState.Value is not null && ConnectionState.Value?.Connection is not null)
+            if (Dispatcher is not null && RoomState.Value is not null && ConnectionState.Value?.Connection is not null && !string.IsNullOrWhiteSpace(messageText))
             {
                 await ConnectionState.Value.Connection.SendCoreAsync("SendMessageToRoom", new object[] { messageText, RoomState.Value.RoomName });
                 Dispatcher.Dispatch(new AddMessageAction(new MessageModel
@@ -73,9 +71,7 @@ namespace MultiplayerPokemon.Client.Pages
 
         private void HandleGetPokemon(string? overridePokemonName = null)
         {
-            Dispatcher.Dispatch(new GetPokemonEffect(overridePokemonName?.FromDisplayName() ?? pokemonId.FromDisplayName()));
-
-            pokemonId = overridePokemonName?.ToDisplayName() ?? pokemonId.ToDisplayName();
+            Dispatcher.Dispatch(new GetPokemonEffect(overridePokemonName?.FromDisplayName() ?? pokemonId.FromDisplayName(), UpdatePokemonName));
 
             StateHasChanged();
         }
@@ -111,7 +107,6 @@ namespace MultiplayerPokemon.Client.Pages
                 }));
             }
         }
-
         private async Task<IEnumerable<string>> SearchPokemon(string searchText)
         {
             if (int.TryParse(searchText, out int pokedexId))
@@ -131,36 +126,36 @@ namespace MultiplayerPokemon.Client.Pages
             }
         }
 
-        private void HandleHoverOverClasses(int partyId)
+        private void HandleOnCardClick(string cardPokedexId)
         {
-            if (lastHover != -1)
-            {
-                partyHoverClasses[lastHover][0] = "options-background-shrink";
-                partyHoverClasses[lastHover][1] = "option-shrink";
-            }
-
-            if (lastHover != partyId)
-            {
-                partyHoverClasses[partyId][0] = "options-background-grow";
-                partyHoverClasses[partyId][1] = "option-grow";
-            }
-
-            lastHover = partyId;
+            pokemonId = cardPokedexId.ToDisplayName();
+            HandleGetPokemon(cardPokedexId);
+            ToggleToSearch();
+        }
+        private async void HandleDrop(int cardID)
+        {
+            if (ConnectionState.Value?.Connection is not null && RoomState.Value is not null)
+                await ConnectionState.Value.Connection.SendCoreAsync("SwapPokemon", new object[] { currentlyHoveringCardId, cardID, RoomState.Value.RoomName });
+            Dispatcher.Dispatch(new PokemonSwappedAction(currentlyHoveringCardId, cardID));
         }
 
-        private void ResetPartyHoverClasses()
+        private async void HandleRemoveCardFromParty(int cardID)
         {
-            partyHoverClasses = new Dictionary<int, string[]>();
-            for (int i = 0; i < 6; i++)
-            {
-                partyHoverClasses.Add(i, new string[2] { string.Empty, string.Empty });
-            }
+            if (ConnectionState.Value?.Connection is not null && RoomState.Value is not null)
+                await ConnectionState.Value.Connection.SendCoreAsync("RemovePokemonFromParty", new object[] { cardID, RoomState.Value.RoomName });
+            Dispatcher.Dispatch(new RemovePokemonFromPartyAction(cardID));
         }
 
-        protected override void OnInitialized()
+        private void HandleDragStart(int cardID)
         {
-            base.OnInitialized();
-            ResetPartyHoverClasses();
+            currentlyHoveringCardId = cardID;
+        }
+        private void HandleDragEnter(int cardID)
+        {
+        }
+
+        private void HandleDragLeave()
+        {
         }
     }
 }

@@ -28,9 +28,6 @@ namespace MultiplayerPokemon.Client.Pages
         [Parameter]
         public Action<string?>? GetPokemon { get; set; }
 
-        [Parameter]
-        public Action<string> UpdatePokemonName { get; set; }
-
         private string pokemonAltDropdown = string.Empty;
 
         private string PokemonAltDropdown
@@ -177,6 +174,7 @@ namespace MultiplayerPokemon.Client.Pages
         private void GetNextPokemon(string nextOrPrevious)
         {
             if (GetPokemon is not null && PokemonModel is not null)
+            {
                 if (nextOrPrevious == "next")
                 {
                     GetPokemon((PokemonModel.Id + 1).ToString());
@@ -185,6 +183,7 @@ namespace MultiplayerPokemon.Client.Pages
                 {
                     GetPokemon((PokemonModel.Id - 1).ToString());
                 }
+            }
         }
 
         private async void UpdatePokemon(string pokemonName)
@@ -208,14 +207,11 @@ namespace MultiplayerPokemon.Client.Pages
                     GetPokemon(pokemonName);
             }
         }
-
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
             if (PokemonModel is not null)
             {
-                UpdatePokemonName(PokemonModel.Name.ToDisplayName());
-
                 if (!CanFlip)
                 {
                     IsFront = true;

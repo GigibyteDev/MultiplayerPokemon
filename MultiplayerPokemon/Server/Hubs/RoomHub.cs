@@ -19,7 +19,8 @@ namespace MultiplayerPokemon.Server.Hubs
             ChatBot = new UserModel
             {
                 IsAdmin = true,
-                Username = "Chat Bot"
+                Username = "Chat Bot",
+                Id = -1
             };
         }
 
@@ -109,7 +110,7 @@ namespace MultiplayerPokemon.Server.Hubs
                     };
 
                     await roomOrchestrator.AddMessageToRoom(newMessage, roomName);
-                    await InvokeMessageSentToRoom(newMessage, room);
+                    await InvokeMessageSentToRoom(newMessage, room.RoomName);
                 }
                 else
                 {
@@ -154,8 +155,11 @@ namespace MultiplayerPokemon.Server.Hubs
 
         public async Task AddPokemonToParty(PokemonPartyDataModel partyData, string roomName)
         {
-            await roomOrchestrator.AddPokemonToParty(partyData, roomName);
-            await InvokePokemonAddedToParty(partyData, roomName);
+            if (connectionManager.CurrentlyConnectedUsers.TryGetValue(Context.ConnectionId, out UserModel? user))
+            {
+                await roomOrchestrator.AddPokemonToParty(partyData, roomName);
+                await InvokePokemonAddedToParty(partyData, roomName);
+            }
         }
 
         public async Task RemovePokemonFromParty(int position, string roomName)
@@ -211,9 +215,9 @@ namespace MultiplayerPokemon.Server.Hubs
             await Clients.OthersInGroup(roomName).SendAsync("PokemonSwapped", currentPos, newPos);
         }
 
-        private async Task InvokeMessageSentToRoom(MessageModel message, RoomModel room)
+        private async Task InvokeMessageSentToRoom(MessageModel message, string roomName)
         {
-            await Clients.OthersInGroup(room.RoomName).SendAsync("MessageSentToRoom", message);
+            await Clients.OthersInGroup(roomName).SendAsync("MessageSentToRoom", message);
         }
 
         private async Task InvokeGetConnectedRoomInfo(RoomModel room, string connectionId)

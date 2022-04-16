@@ -2,6 +2,7 @@
     margin-top: 50px;
     box-shadow: 0px 0px 20px black;
     border-radius: 10px;
+    overflow-y: scroll;
 }
 
 .header-items-wrapper{
@@ -47,7 +48,7 @@
 .main-room-wrapper {
     display: flex;
     width: 80vw;
-    height: 80vh;
+    height: 90vh;
     overflow: hidden;
     white-space: unset;
     flex-direction: row;
@@ -61,7 +62,7 @@
     flex-direction: column;
 }
 
-.pokemon-header-body-wrapper{
+.pokemon-header-body-wrapper {
     flex: 2;
 }
 
@@ -78,7 +79,6 @@
     display: flex;
     justify-content: center;
     align-items:center;
-    margin-bottom: 3em;
     background-color: #E0E0E0;
     height: 6em;
 }
@@ -114,9 +114,7 @@
 }
 
 .pokemon-party-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    flex: 1;
+    
 }
 
 .typeahead-result-wrapper {
@@ -132,7 +130,6 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    justify-content: space-between;
     width: 100%;
     align-items: center;
     flex: 1;
@@ -146,18 +143,72 @@
     height: 100%;
     width: 100%;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .message-send-form{
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+    margin-bottom: 1em;
     width: 100%;
 }
 
-.send-message-box{
+.no-party-message{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50%;
+    justify-content: center;
+    align-items: center;
+    color: #626262;
+}
+
+.send-message-box {
     width: 80%;
     text-align: left;
-    padding: 5px;
+    padding: 12px;
+}
+
+.send-message-button {
+    height: 80%;
+    margin-top: .25em;
+    padding: 12px;
+}
+
+.message-wrapper {
+    display: flex;
+    width: 95%;
+    flex-direction: column;
+    align-items: center;
+    margin-top: .5em;
+}
+
+.message {
+    width: auto;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.message-incoming {
+    border-bottom-left-radius: 0px;
+    background-color: white;
+}
+
+.message-sent {
+    border-bottom-right-radius: 0px;
+    background-color: white;
+}
+
+.message-wrapper-incoming {
+    align-items: flex-start;
+}
+
+.message-wrapper-sent {
+    align-items: flex-end;
 }
 
 .manual-enter-pokesearch-form {
@@ -198,10 +249,13 @@ h1{
 }
 
 .pokemon-party-wrapper {
-    margin-top: -1em;
     width: 100%;
-    height: 90%;
+    height: 95%;
     overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    margin-top: -2em;
 }
 
 .pokemon-card-options {
@@ -229,90 +283,6 @@ h1{
     cursor: pointer;
 }
 
-.options-background-shrink {
-    animation-name: options-background-shrink;
-    animation-timing-function: cubic-bezier();
-    animation-duration: .33s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-}
-
-.options-background-grow {
-    animation-name: options-background-grow;
-    animation-timing-function: cubic-bezier();
-    animation-duration: .33s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-}
-
-.option-shrink {
-    animation-name: option-shrink;
-    animation-timing-function: cubic-bezier();
-    animation-duration: .33s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-}
-
-.option-grow {
-    animation-name: option-grow;
-    animation-timing-function: cubic-bezier();
-    animation-duration: .33s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-}
-
-@keyframes options-background-shrink {
-    0% {
-        height: 20%;
-    }
-
-    100% {
-        height: 0%;
-    }
-}
-
-@keyframes options-background-grow {
-    0% {
-        height: 0%;
-    }
-
-    100% {
-        height: 20%;
-    }
-}
-
-@keyframes option-shrink {
-    0% {
-        height: 2em;
-        width: 2em;
-        font-size: 1em;
-        transform: rotate(0deg);
-    }
-
-    100% {
-        height: 0em;
-        width: 0em;
-        font-size: 0em;
-        transform: rotate(180deg);
-    }
-}
-
-@keyframes option-grow {
-    0% {
-        height: 0em;
-        width: 0em;
-        font-size: 0em;
-        transform: rotate(180deg);
-    }
-
-    100% {
-        height: 2.5em;
-        width: 2.5em;
-        font-size: 1em;
-        transform: rotate(0deg);
-    }
-}
-
 .option-remove-pokemon {
     background-color: red;
 }
@@ -337,6 +307,7 @@ h1{
     flex-direction: column;
     height: 100%;
     cursor: grab;
+    overflow: hidden;
 }
 
 .party-card-icons {
@@ -354,6 +325,7 @@ h1{
     justify-content: center;
     align-items: center;
     object-fit:scale-down;
+    pointer-events: none;
 }
 
 .party-card-img {
@@ -375,4 +347,9 @@ h1{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: large;
+}
+
+.party-card-gender-icon-wrapper{
+    font-size: x-large;
 }

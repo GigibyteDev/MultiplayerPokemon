@@ -81,65 +81,82 @@
                             </div>
                         @if (RoomState.Value.SearchedPokemon is not null)
                         {
-                            <PokemonData UpdatePokemonName="@UpdatePokemonName" GetPokemon="@HandleGetPokemon" />
+                            <PokemonData GetPokemon="@HandleGetPokemon" />
                         }
                     </div>
                 }
                 else
                 {
                     <div class="pokemon-party-wrapper">
-                        @foreach(var partyCard in RoomState.Value.PokemonParty.Cards.OrderBy(c => c.Key))
+                        @if (RoomState.Value.PokemonParty.Cards.Any())
                         {
-                            <div class="pokemon-card" 
-                                @onclick="() => HandleHoverOverClasses(partyCard.Key)"
-                            >
-                                <div class="pokemon-card-flex-wrapper">
-                                    <div class="party-card-icons">
-                                        <div class="party-card-gender-icon-wrapper">
-                                            @switch (partyCard.Value.Gender)
+                            @foreach(var partyCard in RoomState.Value.PokemonParty.Cards.OrderBy(c => c.Key))
+                            {
+                                <div class="pokemon-card" 
+                                        draggable="true"
+                                        ondragover="event.preventDefault();"
+                                        @ondrop="() => HandleDrop(partyCard.Key)"
+                                        @ondragstart="() => HandleDragStart(partyCard.Key)"
+                                        @ondragenter="() => HandleDragEnter(partyCard.Key)"
+                                        @ondragleave="() => HandleDragLeave()"
+                                        @onclick="() => HandleOnCardClick(partyCard.Value.Name)"
+                                        @onmousewheel="() => HandleRemoveCardFromParty(partyCard.Key)"
+                                >
+                                    <div class="pokemon-card-flex-wrapper">
+                                        <div class="party-card-icons">
+                                            <div class="party-card-gender-icon-wrapper">
+                                                @switch (partyCard.Value.Gender)
+                                                {
+                                                    case "male":
+                                                        <i class="bi bi-gender-male party-card-gender-icon"></i>
+                                                        break;
+                                                    case "female":
+                                                        <i class="bi bi-gender-female party-card-gender-icon"></i>
+                                                        break;
+                                                    case "genderless":
+                                                        <i class="bi bi-gender-ambiguous party-card-gender-icon"></i>
+                                                        break;
+                                                }
+                                            </div>
+                                            <div class="party-card-name-wrapper">
+                                                <h1 class="party-card-name">@partyCard.Value.Name.ToDisplayName()</h1>
+                                            </div>
+                                            <div class="party-card-types-wrapper">
+                                                <TypeIcons IconSize=30 PokemonTypes=@partyCard.Value.Types />
+                                            </div>
+                                        </div>
+                                        <div class="party-card-img-wrapper">
+                                            <img src=@partyCard.Value.ImageURI class="party-card-img"/>
+                                        </div>
+                                        <div class="party-card-stats">
+                                            @foreach(var stat in partyCard.Value.Stats)
                                             {
-                                                case "male":
-                                                    <i class="bi bi-gender-male party-card-gender-icon"></i>
-                                                    break;
-                                                case "female":
-                                                    <i class="bi bi-gender-female party-card-gender-icon"></i>
-                                                    break;
-                                                case "genderless":
-                                                    <i class="bi bi-gender-ambiguous party-card-gender-icon"></i>
-                                                    break;
+                                                <div class="party-card-stat-wrapper">
+                                                    <div class="party-card-stat-label">@stat.Name.ToDisplayName()</div>  
+                                                    <div class="party-card-stat-value">@stat.Base</div>  
+                                                </div>
                                             }
                                         </div>
-                                        <div class="party-card-name-wrapper">
-                                            <h1 class="party-card-name">@partyCard.Value.Name.ToDisplayName()</h1>
-                                        </div>
-                                        <div class="party-card-types-wrapper">
-                                            <TypeIcons IconSize=20 PokemonTypes=@partyCard.Value.Types />
-                                        </div>
                                     </div>
-                                    <div class="party-card-img-wrapper">
-                                        <img src=@partyCard.Value.ImageURI class="party-card-img"/>
-                                    </div>
-                                    <div class="party-card-stats">
-                                        @foreach(var stat in partyCard.Value.Stats)
-                                        {
-                                            <div class="party-card-stat-wrapper">
-                                                <div class="party-card-stat-label">@stat.Name.ToDisplayName()</div>  
-                                                <div class="party-card-stat-value">@stat.Base</div>  
-                                            </div>
-                                        }
+                                    <div class="pokemon-card-options">
+                                        <div class="pokemon-card-option option-remove-pokemon">
+                                            <i class="bi bi-x-lg" style="color: white;"></i>
+                                        </div>
+                                        <div class="pokemon-card-option option-more-info">
+                                            <i class="bi bi-zoom-in" style="color: white;"></i>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="pokemon-card-options @partyHoverClasses[partyCard.Key][0]">
-                                    <div class="pokemon-card-option @partyHoverClasses[partyCard.Key][1] option-remove-pokemon">
-                                        <i class="bi bi-x-lg" style="color: white;"></i>
-                                    </div>
-                                    <div class="pokemon-card-option @partyHoverClasses[partyCard.Key][1] option-more-info">
-                                        <i class="bi bi-zoom-in" style="color: white;"></i>
-                                    </div>
-                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="no-party-message">
+                                <h1>There are no pokemon in your party!</h1>
+                                <h1>Swap to the Pokemon Search Tab to add some!</h1>
                             </div>
                         }
-                    </div>  
+                        </div>  
                 }
             </div>
         </div>
@@ -148,16 +165,30 @@
                 <h2>Chat</h2>
             </div>
             <div class="chat-window">
-                @foreach(var message in RoomState.Value.Chat.Messages)
+                @for (int i = 0; i < RoomState.Value.Chat.Messages.Count; i++)
                 {
-                    <div class="message">
-                        @message.MessageText
+                    <div class="message-wrapper @(
+                    UserState.Value?.User.Id == RoomState.Value.Chat.Messages[i].User.Id ? "message-wrapper-sent" : 
+                    RoomState.Value.Chat.Messages[i].User.Id != -1 ? "message-wrapper-incoming" : 
+                    string.Empty)">
+                        @if (i == 0 || RoomState.Value.Chat.Messages[i - 1].User.Id != RoomState.Value.Chat.Messages[i].User.Id)
+                        {
+                            <div class="message-sender">
+                                @RoomState.Value.Chat.Messages[i].User.Username
+                            </div>
+                        }
+                        <div class="message @(
+                            UserState.Value?.User.Id == RoomState.Value.Chat.Messages[i].User.Id ? "message-sent" : 
+                            RoomState.Value.Chat.Messages[i].User.Id != -1 ? "message-incoming" : 
+                            string.Empty)">
+                            @RoomState.Value.Chat.Messages[i].MessageText
+                        </div>
                     </div>
                 }
             </div>
             <form @onsubmit="HandleSendMessage" class="message-send-form">
                 <input type="text" @bind-value="messageText" class="send-message-box"></input >
-                <button type="submit">Send</button>
+                <button type="submit" class="send-message-button">Send</button>
             </form>
         </div>
     </div>

@@ -94,6 +94,8 @@
 .stats-collection {
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
 }
 
 .stat-item-label {
@@ -114,7 +116,7 @@
     flex-direction: column;
     align-items: center;
     margin: 10px;
-    width: 50px;
+    width: 24%;
 }
 
 .image-and-controls {

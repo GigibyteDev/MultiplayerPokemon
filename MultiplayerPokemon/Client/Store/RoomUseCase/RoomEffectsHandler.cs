@@ -23,6 +23,7 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             if (pokemonModel is not null)
             {
                 dispatcher.Dispatch(new GetPokemonSuccessAction(pokemonModel));
+                action.UpdatePokemonName(pokemonModel.Name);
             }
             else
             {

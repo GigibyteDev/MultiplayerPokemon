@@ -4,9 +4,11 @@
     {
         public string PokemonId { get; set; }
 
-        public GetPokemonEffect(string pokemonId)
+        public Action<string> UpdatePokemonName { get; set; }
+        public GetPokemonEffect(string pokemonId, Action<string> updatePokemonName)
         {
             PokemonId = pokemonId;
+            UpdatePokemonName = updatePokemonName;
         }
     }
 }
