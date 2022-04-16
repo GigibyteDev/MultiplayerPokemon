@@ -11,7 +11,7 @@ namespace MultiplayerPokemon.Server.Repositories
     {
         private readonly ITokenService tokenService;
         private readonly List<User> users;
-        private int userId = 1;
+        private int userId = 2;
         public MemoryUserRepository(ITokenService _tokenService)
         {
             users = new List<User>
