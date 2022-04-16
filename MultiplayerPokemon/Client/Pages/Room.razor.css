@@ -86,6 +86,7 @@
 .pokemon-wrapper {
     flex: 2;
     display: flex;
+    height: 100%;
 }
 
 .submit-button {
@@ -113,6 +114,8 @@
 }
 
 .pokemon-party-wrapper {
+    display: flex;
+    flex-wrap: wrap;
     flex: 1;
 }
 
@@ -157,3 +160,219 @@
     padding: 5px;
 }
 
+.manual-enter-pokesearch-form {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.manual-enter-pokesearch-input {
+    background-color: #9E9E9E;
+    border-bottom-right-radius: unset;
+    border-top-right-radius: unset;
+    text-align: center;
+    height: 1.65em;
+    width: 80%;
+    margin: 0em;
+    font-size: x-large;
+}
+
+.manual-enter-pokesearch-button {
+    height: 3.75em;
+}
+
+.typeahead-search-button-wrapper{
+    display: flex;
+    width: 100%;
+}
+
+h1{
+    margin: 0em;
+}
+
+.party-card-name-wrapper {
+    width: 100%;
+    text-align: center;
+    white-space: unset;
+    text-overflow: ellipsis;
+}
+
+.pokemon-party-wrapper {
+    margin-top: -1em;
+    width: 100%;
+    height: 90%;
+    overflow-y: auto;
+}
+
+.pokemon-card-options {
+    background-color: #121212;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-left: -5px;
+    padding-right: 10px;
+    width: 100%;
+    height: 0%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    overflow: hidden;
+}
+
+.pokemon-card-option {
+    width: 0em;
+    height: 0em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    font-size: 0em;
+    cursor: pointer;
+}
+
+.options-background-shrink {
+    animation-name: options-background-shrink;
+    animation-timing-function: cubic-bezier();
+    animation-duration: .33s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.options-background-grow {
+    animation-name: options-background-grow;
+    animation-timing-function: cubic-bezier();
+    animation-duration: .33s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.option-shrink {
+    animation-name: option-shrink;
+    animation-timing-function: cubic-bezier();
+    animation-duration: .33s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.option-grow {
+    animation-name: option-grow;
+    animation-timing-function: cubic-bezier();
+    animation-duration: .33s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes options-background-shrink {
+    0% {
+        height: 20%;
+    }
+
+    100% {
+        height: 0%;
+    }
+}
+
+@keyframes options-background-grow {
+    0% {
+        height: 0%;
+    }
+
+    100% {
+        height: 20%;
+    }
+}
+
+@keyframes option-shrink {
+    0% {
+        height: 2em;
+        width: 2em;
+        font-size: 1em;
+        transform: rotate(0deg);
+    }
+
+    100% {
+        height: 0em;
+        width: 0em;
+        font-size: 0em;
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes option-grow {
+    0% {
+        height: 0em;
+        width: 0em;
+        font-size: 0em;
+        transform: rotate(180deg);
+    }
+
+    100% {
+        height: 2.5em;
+        width: 2.5em;
+        font-size: 1em;
+        transform: rotate(0deg);
+    }
+}
+
+.option-remove-pokemon {
+    background-color: red;
+}
+
+.option-more-info{
+    background-color: blue;
+}
+
+.pokemon-card {
+    background-color: #121212;
+    padding: 5px;
+    border-radius: 10px;
+    width: 30%;
+    height: 40%;
+    margin-left: 1%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pokemon-card-flex-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    cursor: grab;
+}
+
+.party-card-icons {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+}
+
+.party-card-img-wrapper {
+    flex: 5;
+    height: 5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit:scale-down;
+}
+
+.party-card-img {
+    height: 100%;
+    object-fit:cover;
+}
+
+.party-card-stats{
+    flex: 3;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.party-card-stat-wrapper {
+    display: flex;
+    width: 33%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

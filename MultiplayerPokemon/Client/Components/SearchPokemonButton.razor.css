@@ -1,0 +1,9 @@
+﻿.search-typeahead-button {
+    border-bottom-left-radius: unset;
+    border-top-left-radius: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0em;
+    height: 3.75em;
+}

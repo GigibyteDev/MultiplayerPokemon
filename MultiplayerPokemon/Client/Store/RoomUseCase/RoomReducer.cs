@@ -1,6 +1,7 @@
 ﻿using Fluxor;
 using MultiplayerPokemon.Client.Store.RoomUseCase.RoomActions;
 using MultiplayerPokemon.Shared.Logic;
+using MultiplayerPokemon.Shared.Enums;
 
 namespace MultiplayerPokemon.Client.Store.RoomUseCase
 {
@@ -81,6 +82,79 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             return new RoomState
             (
                 previousState: state
+            );
+        }
+
+        [ReducerMethod(typeof(GetPokemonStarterAction))]
+        public static RoomState GetPokemonStarterAction(RoomState state)
+        {
+            return new RoomState
+            (
+                previousState: state,
+                isLoadingSearchedPokemon: true
+            );
+        }
+
+        [ReducerMethod(typeof(GetPokemonErrorAction))]
+        public static RoomState GetPokemonErrorAction(RoomState state)
+        {
+            return new RoomState
+            (
+                previousState: state,
+                isLoadingSearchedPokemon: false,
+                errorGettingSearchedPokemon: true
+            );
+        }
+
+        [ReducerMethod]
+        public static RoomState GetPokemonSuccessAction(RoomState state, GetPokemonSuccessAction action)
+        {
+            var gender = state.SearchedPokemonGender;
+            switch (action.PokemonModel.GenderType)
+            {
+                case PokemonGenderTypes.MaleOrFemale:
+                    if (gender != "male" && gender != "female")
+                    {
+                        gender = "male";
+                    }
+                    break;
+                case PokemonGenderTypes.MaleOnly:
+                    gender = "male";
+                    break;
+                case PokemonGenderTypes.FemaleOnly:
+                    gender = "female";
+                    break;
+                case PokemonGenderTypes.Genderless:
+                    gender = "genderless";
+                    break;
+            }
+            return new RoomState
+            (
+                previousState: state,
+                isLoadingSearchedPokemon: false,
+                errorGettingSearchedPokemon: false,
+                searchedPokemon: action.PokemonModel,
+                searchedPokemonGender: gender
+            );
+        }
+
+        [ReducerMethod]
+        public static RoomState UpdateSearchedPokemonGenderAction(RoomState state, UpdateSearchedPokemonGenderAction action)
+        {
+            return new RoomState
+            (
+                previousState: state,
+                searchedPokemonGender: action.Gender
+            );
+        }
+
+        [ReducerMethod]
+        public static RoomState UpdateSearchedPokemonShinyAction(RoomState state, UpdateSearchedPokemonShinyAction action)
+        {
+            return new RoomState
+            (
+                previousState: state,
+                searchedPokemonShiny: action.IsShiny
             );
         }
     }

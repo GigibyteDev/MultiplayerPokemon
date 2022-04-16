@@ -14,13 +14,13 @@ namespace MultiplayerPokemon.Client.Clients
             http = _http;
         }
 
-        public async Task<IEnumerable<string>> GetPokemonNames()
+        public async Task<Dictionary<int, string>> GetPokemonNames()
         {
-            List<string> pokemonNames = new List<string>();
+            Dictionary<int, string> pokemonNames = new Dictionary<int, string>();
 
             var queryObject = new
             {
-                query = @"query { pokemon_v2_pokemon { name } }",
+                query = @"query { pokemon_v2_pokemon { id, name } }",
                 variables = new { }
             };
 
@@ -33,19 +33,19 @@ namespace MultiplayerPokemon.Client.Clients
             try
             {
 
-            var result = await http.PostAsync("graphql/v1beta", pokemonNameQuery);
+                var result = await http.PostAsync("graphql/v1beta", pokemonNameQuery);
 
-            if (result.IsSuccessStatusCode)
-            {
-                var data = await JsonSerializer.DeserializeAsync<PokemonNameDataCollectionWrapper>(await result.Content.ReadAsStreamAsync());
-                if (data is not null)
+                if (result.IsSuccessStatusCode)
                 {
-                    foreach(var name in data.Data.PokemonNames)
+                    var data = await JsonSerializer.DeserializeAsync<PokemonNameDataCollectionWrapper>(await result.Content.ReadAsStreamAsync());
+                    if (data is not null)
                     {
-                        pokemonNames.Add(name.Name.ToDisplayName());
+                        foreach(var name in data.Data.PokemonNames)
+                        {
+                            pokemonNames.Add(name.Id, name.Name.ToDisplayName());
+                        }
                     }
                 }
-            }
             }
             catch (Exception ex)
             {

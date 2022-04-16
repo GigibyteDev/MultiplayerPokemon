@@ -31,32 +31,46 @@
                 {
                     <div class="pokemon-search-wrapper">
                         <div class="pokemon-search-form" @onsubmit="() => HandleGetPokemon()">
-                            <BlazoredTypeahead 
-                                SearchMethod="SearchPokemon" 
-                                TValue="string" 
-                                TItem="string" 
-                                Value="pokemonId" 
-                                ValueChanged="HandleGetPokemon" 
-                                ValueExpression="@(() => pokemonId)" 
-                                placeholder="Search by name..."
-                            >
-                                <SelectedTemplate>
-                                    <div class="typeahead-search-wrapper">
-                                        @context
+                            @if (SearchDataState.Value is not null && SearchDataState.Value.PokemonNames.Any())
+                            {
+                                <div class="typeahead-search-button-wrapper">
+                                    <BlazoredTypeahead 
+                                        SearchMethod="SearchPokemon" 
+                                        TValue="string" 
+                                        TItem="string" 
+                                        Value="pokemonId" 
+                                        ValueChanged="HandleGetPokemon" 
+                                        ValueExpression="@(() => pokemonId)" 
+                                        placeholder="Search Pokemon by name or pokedex number..."
+                                    >
+                                        <SelectedTemplate>
+                                            <div class="typeahead-search-wrapper">
+                                                @context
+                                            </div>
+                                        </SelectedTemplate>
+                                        <ResultTemplate>
+                                            <div class="typeahead-result-wrapper">
+                                                @context
+                                            </div>
+                                        </ResultTemplate>
+                                        <NotFoundTemplate>
+                                            <div class="typeahead-result-wrapper">
+                                                No Pokemon Found!
+                                            </div>
+                                        </NotFoundTemplate>
+                                        </BlazoredTypeahead>
+                                        <SearchPokemonButton HandleGetPokemon="HandleGetPokemon" />
                                     </div>
-                                </SelectedTemplate>
-                                <ResultTemplate>
-                                    <div class="typeahead-result-wrapper">
-                                        @context
-                                    </div>
-                                </ResultTemplate>
-                                <NotFoundTemplate>
-                                    <div class="typeahead-result-wrapper">
-                                        No Pokemon Found!
-                                    </div>
-                                </NotFoundTemplate>
-                            </BlazoredTypeahead>
-                            @if (searchedPokemon is not null && searchedPokemon.Id < 10000)
+                                }
+                                else
+                                {
+                                    <form class="manual-enter-pokesearch-form" @onsubmit="() => HandleGetPokemon()">
+                                        <input type="text" @bind-value="pokemonId" class="manual-enter-pokesearch-input" placeholder="Search Pokemon by name or pokedex number..."></input>
+                                        <SearchPokemonButton HandleGetPokemon="HandleGetPokemon" />
+                                    </form>
+                                }
+
+                            @if (RoomState.Value.SearchedPokemon is not null)
                             {
                                 <button type="button" class="submit-button-active" @onclick="HandleAddPokemonToParty">Add To Party</button>
                             }
@@ -65,9 +79,9 @@
                                 <button type="button" class="submit-button">Add To Party</button>
                             }
                             </div>
-                        @if (searchedPokemon is not null)
+                        @if (RoomState.Value.SearchedPokemon is not null)
                         {
-                            <PokemonData PokemonModel="@searchedPokemon" GetPokemon="@HandleGetPokemon" />
+                            <PokemonData UpdatePokemonName="@UpdatePokemonName" GetPokemon="@HandleGetPokemon" />
                         }
                     </div>
                 }
@@ -76,7 +90,54 @@
                     <div class="pokemon-party-wrapper">
                         @foreach(var partyCard in RoomState.Value.PokemonParty.Cards.OrderBy(c => c.Key))
                         {
-                            <div>@partyCard.Value.Name</div>
+                            <div class="pokemon-card" 
+                                @onclick="() => HandleHoverOverClasses(partyCard.Key)"
+                            >
+                                <div class="pokemon-card-flex-wrapper">
+                                    <div class="party-card-icons">
+                                        <div class="party-card-gender-icon-wrapper">
+                                            @switch (partyCard.Value.Gender)
+                                            {
+                                                case "male":
+                                                    <i class="bi bi-gender-male party-card-gender-icon"></i>
+                                                    break;
+                                                case "female":
+                                                    <i class="bi bi-gender-female party-card-gender-icon"></i>
+                                                    break;
+                                                case "genderless":
+                                                    <i class="bi bi-gender-ambiguous party-card-gender-icon"></i>
+                                                    break;
+                                            }
+                                        </div>
+                                        <div class="party-card-name-wrapper">
+                                            <h1 class="party-card-name">@partyCard.Value.Name.ToDisplayName()</h1>
+                                        </div>
+                                        <div class="party-card-types-wrapper">
+                                            <TypeIcons IconSize=20 PokemonTypes=@partyCard.Value.Types />
+                                        </div>
+                                    </div>
+                                    <div class="party-card-img-wrapper">
+                                        <img src=@partyCard.Value.ImageURI class="party-card-img"/>
+                                    </div>
+                                    <div class="party-card-stats">
+                                        @foreach(var stat in partyCard.Value.Stats)
+                                        {
+                                            <div class="party-card-stat-wrapper">
+                                                <div class="party-card-stat-label">@stat.Name.ToDisplayName()</div>  
+                                                <div class="party-card-stat-value">@stat.Base</div>  
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="pokemon-card-options @partyHoverClasses[partyCard.Key][0]">
+                                    <div class="pokemon-card-option @partyHoverClasses[partyCard.Key][1] option-remove-pokemon">
+                                        <i class="bi bi-x-lg" style="color: white;"></i>
+                                    </div>
+                                    <div class="pokemon-card-option @partyHoverClasses[partyCard.Key][1] option-more-info">
+                                        <i class="bi bi-zoom-in" style="color: white;"></i>
+                                    </div>
+                                </div>
+                            </div>
                         }
                     </div>  
                 }

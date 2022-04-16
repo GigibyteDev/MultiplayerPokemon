@@ -1,0 +1,17 @@
+﻿@if (RoomState.Value is not null)
+{
+    <button class="search-typeahead-button" @onclick="() => HandleGetPokemon(null)">
+        @if (RoomState.Value.IsLoadingSearchedPokemon)
+        {
+            <i class="bi bi-arrow-repeat" style="color: black; font-size: xx-large"></i>
+        }
+        else if (RoomState.Value.ErrorGettingSearchedPokemon)
+        {
+            <i class="bi bi-x" style="color: red; font-size: xx-large"></i>
+        }
+        else
+        {
+            <i class="bi bi-search" style="color: black; font-size: xx-large"></i>
+        }
+    </button>
+}

@@ -14,6 +14,11 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
         public List<UserModel> UserHistory { get; set; }
         public ChatModel Chat { get; set; }
         public RoomPartyModel PokemonParty { get; set; }
+        public PokemonModel? SearchedPokemon { get; set; }
+        public bool IsLoadingSearchedPokemon { get; set; }
+        public bool ErrorGettingSearchedPokemon { get; set; }
+        public string SearchedPokemonGender { get; set; }
+        public bool SearchedPokemonShiny { get; set; }
 
         public RoomState()
         {
@@ -24,6 +29,11 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             UserHistory = new List<UserModel>();
             Chat = new ChatModel();
             PokemonParty = new RoomPartyModel(new Dictionary<int, PartyCardModel>());
+            SearchedPokemon = null;
+            IsLoadingSearchedPokemon = false;
+            ErrorGettingSearchedPokemon = false;
+            SearchedPokemonGender = "male";
+            SearchedPokemonShiny = false;
         }
 
         public RoomState(RoomModel model, RoomPartyModel roomPartyModel)
@@ -35,6 +45,11 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             UserHistory = model.UserHistory;
             Chat = model.Chat;
             PokemonParty = roomPartyModel;
+            SearchedPokemon = null;
+            IsLoadingSearchedPokemon = false;
+            ErrorGettingSearchedPokemon = false;
+            SearchedPokemonGender = "male";
+            SearchedPokemonShiny = false;
         }
 
         public RoomState(
@@ -45,7 +60,12 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             List<UserModel>? currentUsers = null, 
             List<UserModel>? userHistory = null, 
             ChatModel? chat = null, 
-            RoomPartyModel? pokemonParty = null
+            RoomPartyModel? pokemonParty = null,
+            PokemonModel? searchedPokemon = null,
+            bool? isLoadingSearchedPokemon = null,
+            bool? errorGettingSearchedPokemon = null,
+            string? searchedPokemonGender = null,
+            bool? searchedPokemonShiny = null
             )
         {
             RoomName = roomName ?? previousState.RoomName;
@@ -55,6 +75,11 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             UserHistory= userHistory ?? previousState.UserHistory;
             Chat = chat ?? previousState.Chat;
             PokemonParty = pokemonParty ?? previousState.PokemonParty;
+            SearchedPokemon = searchedPokemon ?? previousState.SearchedPokemon;
+            IsLoadingSearchedPokemon = isLoadingSearchedPokemon ?? previousState.IsLoadingSearchedPokemon;
+            ErrorGettingSearchedPokemon = errorGettingSearchedPokemon ?? previousState.ErrorGettingSearchedPokemon;
+            SearchedPokemonShiny = searchedPokemonShiny ?? previousState.SearchedPokemonShiny;
+            SearchedPokemonGender = searchedPokemonGender ?? previousState.SearchedPokemonGender;
         }
     }
 }

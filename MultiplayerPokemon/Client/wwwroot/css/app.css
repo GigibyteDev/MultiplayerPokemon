@@ -53,6 +53,10 @@ input {
     border: none !important;
 }
 
+.blazored-typeahead__clear{
+    display: none !important;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

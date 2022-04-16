@@ -1,18 +1,35 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.Components;
 using MultiplayerPokemon.Client.Clients;
+using MultiplayerPokemon.Client.Helpers;
 using MultiplayerPokemon.Client.Models;
+using MultiplayerPokemon.Client.Store.RoomUseCase;
+using MultiplayerPokemon.Client.Store.RoomUseCase.RoomActions;
 using MultiplayerPokemon.Shared.Enums;
 
 namespace MultiplayerPokemon.Client.Pages
 {
     public partial class PokemonData
     {
-        [Parameter]
-        public PokemonModel? PokemonModel { get; set; }
+        [Inject]
+        private IState<RoomState> RoomState { get; set; }
+
+        [Inject]
+        private RESTPokemonClient? PokemonClient { get; set; }
+
+        [Inject]
+        private IDispatcher? Dispatcher { get; set; }
+
+        private PokemonModel? PokemonModel
+        {
+            get => RoomState.Value?.SearchedPokemon;
+        }
 
         [Parameter]
         public Action<string?>? GetPokemon { get; set; }
+
+        [Parameter]
+        public Action<string> UpdatePokemonName { get; set; }
 
         private string pokemonAltDropdown = string.Empty;
 
@@ -27,17 +44,10 @@ namespace MultiplayerPokemon.Client.Pages
             }
         }
 
-        [Inject]
-        private RESTPokemonClient? PokemonClient { get; set; }
-
-        [Inject]
-        private IDispatcher? Dispatcher { get; set; }
-
-        private string Gender { get; set; } = "male";
         private bool IsFront { get; set; } = true;
-        private bool IsShiny { get; set; } = false;
         private string ImgUri { get; set; } = string.Empty;
         private string PokemonSelectedDescription { get; set; }
+
         private string pokemonSelectedGameValue = string.Empty;
         private string PokemonSelectedGame
         {
@@ -58,9 +68,19 @@ namespace MultiplayerPokemon.Client.Pages
             get => !string.IsNullOrWhiteSpace(PokemonModel?.Sprites.DefaultSprites.Back);
         }
 
+        private bool IsShiny
+        {
+            get => RoomState.Value?.SearchedPokemonShiny ?? false;
+        }
+
+        private string Gender
+        {
+            get => RoomState.Value?.SearchedPokemonGender ?? "male";
+        }
+
         private void HandleShinyChange()
         {
-            IsShiny = !IsShiny;
+            Dispatcher?.Dispatch(new UpdateSearchedPokemonShinyAction(!IsShiny));
             UpdateImageURI();
         }
 
@@ -87,35 +107,13 @@ namespace MultiplayerPokemon.Client.Pages
             {
                 if (Gender == "male")
                 {
-                    Gender = "female";
+                    Dispatcher?.Dispatch(new UpdateSearchedPokemonGenderAction("female"));
                 }
                 else
                 {
-                    Gender = "male";
+                    Dispatcher?.Dispatch(new UpdateSearchedPokemonGenderAction("male"));
                 }
                 UpdateImageURI();
-            }
-        }
-
-        private void HandleGenderSet()
-        {
-            switch (PokemonModel?.GenderType)
-            {
-                case PokemonGenderTypes.MaleOrFemale:
-                    if (Gender != "male" && Gender != "female")
-                    {
-                        Gender = "male";
-                    }
-                    break;
-                case PokemonGenderTypes.MaleOnly:
-                    Gender = "male";
-                    break;
-                case PokemonGenderTypes.FemaleOnly:
-                    Gender = "female";
-                    break;
-                default:
-                    Gender = "genderless";
-                    break;
             }
         }
 
@@ -214,19 +212,19 @@ namespace MultiplayerPokemon.Client.Pages
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
-
-            HandleGenderSet();
-
-            if (!CanFlip)
-            {
-                IsFront = true;
-            }
-
-            UpdateImageURI();
-
-            pokemonAltDropdown = PokemonModel?.Name ?? string.Empty;
-
             if (PokemonModel is not null)
+            {
+                UpdatePokemonName(PokemonModel.Name.ToDisplayName());
+
+                if (!CanFlip)
+                {
+                    IsFront = true;
+                }
+
+                UpdateImageURI();
+
+                pokemonAltDropdown = PokemonModel.Name ?? string.Empty;
+
                 if (!string.IsNullOrWhiteSpace(PokemonSelectedGame) && PokemonModel.FlavorTexts.Any(text => text.Version == PokemonSelectedGame))
                 {
                     SetDescription();
@@ -235,6 +233,7 @@ namespace MultiplayerPokemon.Client.Pages
                 {
                     PokemonSelectedGame = PokemonModel.FlavorTexts.Last().Version;
                 }
+            }
 
             StateHasChanged();
         }

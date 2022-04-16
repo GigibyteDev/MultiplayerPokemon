@@ -12,6 +12,10 @@
     cursor: pointer;
 }
 
+.type-icon-container{
+    width: 80px;
+}
+
 .pokemon-info-wrapper {
     display: flex;
     justify-content: center;
