@@ -27,11 +27,6 @@ namespace MultiplayerPokemon.Server.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<string>> ForceRemoveUserFromAnyRoom(UserModel user)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<RoomModel?> GetRoomByRoomName(string roomName)
         {
             throw new NotImplementedException();

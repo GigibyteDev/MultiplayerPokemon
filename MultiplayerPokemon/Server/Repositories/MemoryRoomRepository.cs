@@ -83,25 +83,6 @@ namespace MultiplayerPokemon.Server.Repositories
             return false;
         }
 
-        public async Task<IEnumerable<string>> ForceRemoveUserFromAnyRoom(UserModel user)
-        {
-            var userRooms = Rooms.Where(r => r.CurrentUsers.Any(v => v.Username == user.Username));
-
-            if (userRooms.Any())
-            {
-                List<string> activeRoomNames = new List<string>();
-                foreach (var userRoom in userRooms)
-                {
-                    userRoom.CurrentUsers.RemoveAll(u => u.Id == user.Id);
-                    activeRoomNames.Add(userRoom.RoomName);
-                }
-
-                return activeRoomNames;
-            }
-
-            return new List<string>();
-        }
-
         public async Task<bool> AddMessageToRoom(MessageModel message, string roomName)
         {
             if (GetRoomIfExists(roomName, out RoomModel room))

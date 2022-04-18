@@ -87,6 +87,9 @@
                 }
                 else
                 {
+                    <div class="party-stats-wrapper">
+                        <h1>howdy B)</h1>
+                    </div>
                     <div class="pokemon-party-wrapper">
                         @if (RoomState.Value.PokemonParty.Cards.Any())
                         {
@@ -138,14 +141,6 @@
                                             }
                                         </div>
                                     </div>
-                                    <div class="pokemon-card-options">
-                                        <div class="pokemon-card-option option-remove-pokemon">
-                                            <i class="bi bi-x-lg" style="color: white;"></i>
-                                        </div>
-                                        <div class="pokemon-card-option option-more-info">
-                                            <i class="bi bi-zoom-in" style="color: white;"></i>
-                                        </div>
-                                    </div>
                                 </div>
                             }
                         }
@@ -159,18 +154,22 @@
                         </div>  
                 }
             </div>
+            <div class="pokemon-footer-wrapper">
+                <h1>howdy B)</h1>
+            </div>
         </div>
         <div class="chat-wrapper">
             <div class="chat-header-wrapper">
                 <h2>Chat</h2>
             </div>
             <div class="chat-window">
-                @for (int i = 0; i < RoomState.Value.Chat.Messages.Count; i++)
+                @for (int i = RoomState.Value.Chat.Messages.Count - 1; i >= 0; i--)
                 {
                     <div class="message-wrapper @(
-                    UserState.Value?.User.Id == RoomState.Value.Chat.Messages[i].User.Id ? "message-wrapper-sent" : 
-                    RoomState.Value.Chat.Messages[i].User.Id != -1 ? "message-wrapper-incoming" : 
-                    string.Empty)">
+                        UserState.Value?.User.Id == RoomState.Value.Chat.Messages[i].User.Id ? "message-wrapper-sent" : 
+                        RoomState.Value.Chat.Messages[i].User.Id != -1 ? "message-wrapper-incoming" : 
+                        string.Empty)"
+                    >
                         @if (i == 0 || RoomState.Value.Chat.Messages[i - 1].User.Id != RoomState.Value.Chat.Messages[i].User.Id)
                         {
                             <div class="message-sender">
@@ -180,14 +179,15 @@
                         <div class="message @(
                             UserState.Value?.User.Id == RoomState.Value.Chat.Messages[i].User.Id ? "message-sent" : 
                             RoomState.Value.Chat.Messages[i].User.Id != -1 ? "message-incoming" : 
-                            string.Empty)">
+                            string.Empty)"
+                    >
                             @RoomState.Value.Chat.Messages[i].MessageText
                         </div>
                     </div>
                 }
             </div>
             <form @onsubmit="HandleSendMessage" class="message-send-form">
-                <input type="text" @bind-value="messageText" class="send-message-box"></input >
+                <input type="text" @bind-value="messageText" class="send-message-box" placeholder="Send Message..."></input >
                 <button type="submit" class="send-message-button">Send</button>
             </form>
         </div>

@@ -14,6 +14,7 @@ namespace MultiplayerPokemon.Server.Orchestrators
             roomRepository = _roomRepository;
             userRepository = _userRepository;
         }
+
         public async Task<CreateRoomResult> CreateRoom(CreateRoomRequest request)
         {
             return await roomRepository.CreateRoom(request);
@@ -51,11 +52,6 @@ namespace MultiplayerPokemon.Server.Orchestrators
         public async Task<bool> RemoveUserFromRoom(UserModel user, string roomName)
         {
             return await roomRepository.RemoveUserFromRoom(user, roomName);
-        }
-
-        public async Task<IEnumerable<string>> ForceRemoveUserFromAnyRoom(UserModel user)
-        {
-            return await roomRepository.ForceRemoveUserFromAnyRoom(user);
         }
 
         public async Task<bool> AddMessageToRoom(MessageModel message, string roomName)

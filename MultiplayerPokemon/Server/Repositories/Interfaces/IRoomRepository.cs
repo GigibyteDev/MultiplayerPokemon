@@ -10,7 +10,6 @@ namespace MultiplayerPokemon.Server.Repositories.Interfaces
         Task<bool> AddUserToRoom(UserModel user, string roomName);
         Task<RoomModel?> GetUserRoomIfConnected(UserModel user);
         Task<bool> RemoveUserFromRoom(UserModel user, string roomName);
-        Task<IEnumerable<string>> ForceRemoveUserFromAnyRoom(UserModel user);
         Task<bool> AddMessageToRoom(MessageModel message, string roomName);
         Task<IEnumerable<RoomData>> GetRoomListData();
         Task<bool> AddPokemonToParty(PokemonPartyDataModel partyModel, string roomName);

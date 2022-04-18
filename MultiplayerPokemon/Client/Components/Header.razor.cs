@@ -34,6 +34,7 @@ namespace MultiplayerPokemon.Client.Components
         bool expanded = false;
         string expandClass = string.Empty;
         string rotateClass = string.Empty;
+        string fadeClass = "header-cover-init";
 
         private async void HandleLogOut()
         {
@@ -58,11 +59,13 @@ namespace MultiplayerPokemon.Client.Components
             {
                 expandClass = "unexpand";
                 rotateClass = "unrotate";
+                fadeClass = "fadeOut";
             }
             else
             {
                 expandClass = "expand";
                 rotateClass = "rotate";
+                fadeClass = "fadeIn";
             }
 
             expanded = !expanded;

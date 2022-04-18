@@ -1,11 +1,4 @@
-﻿.main-room-wrapper {
-    margin-top: 50px;
-    box-shadow: 0px 0px 20px black;
-    border-radius: 10px;
-    overflow-y: scroll;
-}
-
-.header-items-wrapper{
+﻿.header-items-wrapper{
     display: flex;
 }
 
@@ -45,15 +38,21 @@
     margin: 0px;
 }
 
+.full-room-wrapper {
+    width: 90%;
+}
+
 .main-room-wrapper {
     display: flex;
-    width: 80vw;
     height: 90vh;
     overflow: hidden;
     white-space: unset;
     flex-direction: row;
     padding: 20px;
     background-color: #212121;
+    box-shadow: 0px 0px 20px black;
+    border-radius: 10px;
+    margin-top: 1em;
 }
 
 .room-title-wrapper{
@@ -62,12 +61,19 @@
     flex-direction: column;
 }
 
+.party-stats-wrapper {
+    width: 15vw;
+    background-color: #121212;
+    margin-top: -3em;
+    margin-left: -1.2em;
+}
+
 .pokemon-header-body-wrapper {
     flex: 2;
 }
 
 .room-header-wrapper {
-    margin-bottom: 3em;
+    margin-bottom: 1.5em;
     background-color: #121212;
     padding: 1em;
     margin-left: -2em;
@@ -128,25 +134,24 @@
 
 .chat-wrapper {
     display: flex;
-    flex: 1;
     flex-direction: column;
-    width: 100%;
+    margin-right: -1.3em;
     align-items: center;
-    flex: 1;
+    flex: .75;
     background-color: #9E9E9E;
     color: black;
     margin-top: -1.4em;
-    border-radius: 5px;
+    height: 100%;
+    padding-bottom: 2.8em;
 }
 
 .chat-window{
-    height: 100%;
     width: 100%;
+    height:100%;
     flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: center;
-    height: 100%;
     overflow-y: auto;
 }
 
@@ -155,6 +160,7 @@
     justify-content: space-evenly;
     margin-bottom: 1em;
     width: 100%;
+    margin-bottom: -2.5em;
 }
 
 .no-party-message{
@@ -176,6 +182,7 @@
 .send-message-button {
     height: 80%;
     margin-top: .25em;
+    margin-right: .5em;
     padding: 12px;
 }
 
@@ -184,22 +191,28 @@
     width: 95%;
     flex-direction: column;
     align-items: center;
-    margin-top: .5em;
+    margin-bottom: .5em;
+}
+
+.message-sender{
+    margin: 0em;
+    font-weight: bold;
 }
 
 .message {
     width: auto;
-    padding: 8px;
     border-radius: 10px;
 }
 
 .message-incoming {
     border-bottom-left-radius: 0px;
+    padding: 8px;
     background-color: white;
 }
 
 .message-sent {
     border-bottom-right-radius: 0px;
+    padding: 8px;
     background-color: white;
 }
 
