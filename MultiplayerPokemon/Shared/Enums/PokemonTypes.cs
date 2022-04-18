@@ -6,7 +6,7 @@
         public string DisplayValue { get; }
         private string URI { get; set; }
 
-        private static List<PokemonTypes> PokemonTypesCollection = new List<PokemonTypes>();
+        public static List<PokemonTypes> PokemonTypesCollection = new List<PokemonTypes>();
 
         public static readonly PokemonTypes Normal = new PokemonTypes("normal", "Normal", @"https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Pok%C3%A9mon_Normal_Type_Icon.svg/{}px-Pok%C3%A9mon_Normal_Type_Icon.svg.png");
         public static readonly PokemonTypes Fighting = new PokemonTypes("fighting", "Fighting", @"https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Pok%C3%A9mon_Fighting_Type_Icon.svg/{}px-Pok%C3%A9mon_Fighting_Type_Icon.svg.png");
@@ -26,8 +26,6 @@
         public static readonly PokemonTypes Dragon = new PokemonTypes("dragon", "Dragon", @"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pok%C3%A9mon_Dragon_Type_Icon.svg/{}px-Pok%C3%A9mon_Dragon_Type_Icon.svg.png");
         public static readonly PokemonTypes Dark = new PokemonTypes("dark", "Dark", @"https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Pok%C3%A9mon_Dark_Type_Icon.svg/{}px-Pok%C3%A9mon_Dark_Type_Icon.svg.png");
         public static readonly PokemonTypes Fairy = new PokemonTypes("fairy", "Fairy", @"https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Pok%C3%A9mon_Fairy_Type_Icon.svg/{}px-Pok%C3%A9mon_Fairy_Type_Icon.svg.png");
-        public static readonly PokemonTypes Unknown = new PokemonTypes("unknown", "Unknown", @"");
-        public static readonly PokemonTypes Shadow = new PokemonTypes("shadow", "Shadow", @"");
 
         private PokemonTypes(string id, string value, string uri)
         {
@@ -40,7 +38,7 @@
 
         public static PokemonTypes GetPokemonTypeById(string id)
         {
-            return PokemonTypesCollection.FirstOrDefault(x => x.Id == id.ToLower().Trim()) ?? Unknown;
+            return PokemonTypesCollection.First(x => x.Id == id.ToLower().Trim());
         }
 
         public string ImageURI(int size = 60)

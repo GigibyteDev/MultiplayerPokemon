@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Authorization
+@using MultiplayerPokemon.Shared.Enums
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 @attribute [Authorize]
@@ -88,7 +89,10 @@
                 else
                 {
                     <div class="party-stats-wrapper">
-                        <h1>howdy B)</h1>
+                        <span class="party-stats-title">Party Stats</span>
+                        <div>
+                            <TypeIcons PokemonTypes=PokemonTypes.PokemonTypesCollection IconSize=40 />
+                        </div>
                     </div>
                     <div class="pokemon-party-wrapper">
                         @if (RoomState.Value.PokemonParty.Cards.Any())
