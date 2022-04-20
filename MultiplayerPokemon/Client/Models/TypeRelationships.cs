@@ -329,7 +329,7 @@ namespace MultiplayerPokemon.Client.Models
             }
         };
 
-        public static Dictionary<PokemonTypes, Dictionary<PokemonTypes, bool>> TypeDefenceResistances { get; set; } = new Dictionary<PokemonTypes, Dictionary<PokemonTypes, bool>>
+        public static Dictionary<PokemonTypes, Dictionary<PokemonTypes, bool>> TypeDefenseResistances { get; set; } = new Dictionary<PokemonTypes, Dictionary<PokemonTypes, bool>>
         {
             { 
                 PokemonTypes.Grass, new Dictionary<PokemonTypes, bool>
@@ -490,7 +490,7 @@ namespace MultiplayerPokemon.Client.Models
             }
         };
 
-        public static Dictionary<PokemonTypes, List<PokemonTypes>> TypeDefenceVulnerabilities { get; set; } = new Dictionary<PokemonTypes, List<PokemonTypes>>
+        public static Dictionary<PokemonTypes, List<PokemonTypes>> TypeDefenseVulnerabilities { get; set; } = new Dictionary<PokemonTypes, List<PokemonTypes>>
         {
             {
                 PokemonTypes.Grass,
