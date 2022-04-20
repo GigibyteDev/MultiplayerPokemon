@@ -1,0 +1,44 @@
+﻿@using MultiplayerPokemon.Shared.Enums
+
+<span class="party-stats-title">Party Stats</span>
+<div class="party-stats-inner-wrapper">
+    @if (PartyPokemon is not null && PartyPokemon.Any())
+    {
+        <div class="party-stats-icon-wrapper">
+            @if (partyTypes is not null)
+            {
+                @foreach(var type in partyTypes.TypesCoverage)
+                {
+                    <div class="party-stats-icon">
+                        <img class="@(
+                            type.Value == PartyCoverage.OffensivelyCovered ? "party-stats-icon-party-offensive-covered" : 
+                            type.Value == PartyCoverage.DefensivelyOpen ? "party-stats-icon-party-defensively-open" :
+                            string.Empty)" style="width: 35px" src=@(@type.Key.ImageURI(35)) alt="@type.Key.DisplayValue" />
+                    </div>
+                }
+            }
+        </div>
+        <div class="party-stats-total">
+            @foreach(var stat in totalStats)
+            {
+                <div class="party-stat-item @(
+                    totalStats.Select(x => x.Base).Max() == stat.Base ? "party-stat-max-total" :
+                    totalStats.Select(x => x.Base).Min() == stat.Base ? "party-stat-min-total" :
+                    string.Empty
+                )">
+                    <div class="party-stat-item-label">
+                        @stat.Name.ToDisplayName()
+                    </div>
+
+                    <div class="party-stat-item-value">
+                        @stat.Base
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <h4>Awaiting Pokemon to be added...</h4>
+    }
+</div>

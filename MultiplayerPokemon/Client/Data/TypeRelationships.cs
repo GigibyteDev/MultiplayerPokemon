@@ -1,6 +1,6 @@
 ﻿using MultiplayerPokemon.Shared.Enums;
 
-namespace MultiplayerPokemon.Client.Models
+namespace MultiplayerPokemon.Client.Data
 {
     public static class TypeRelationships
     {
@@ -222,9 +222,7 @@ namespace MultiplayerPokemon.Client.Models
                     { PokemonTypes.Ground, false },
                     { PokemonTypes.Poison, false },
                     { PokemonTypes.Rock, false },
-                    { PokemonTypes.Steel, true },
-                    { PokemonTypes.Poison, false },
-                    { PokemonTypes.Steel, false }
+                    { PokemonTypes.Steel, true }
                 }
             },
             {
@@ -309,7 +307,7 @@ namespace MultiplayerPokemon.Client.Models
                 {
                     { PokemonTypes.Dark, true },
                     { PokemonTypes.Psychic, false },
-                    { PokemonTypes.Fighting, false }
+                    { PokemonTypes.Steel, false }
                 }
             },
             {

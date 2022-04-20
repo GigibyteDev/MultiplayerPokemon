@@ -17,7 +17,7 @@
                     </div>
                     <div class="header-tabs">
                         <div class="header-item @(roomTabToggle ? "selected-header-item" : string.Empty)"
-                                @onclick=(ToggleToSearch)>
+                            @onclick=(ToggleToSearch)>
                             <h3>Pokemon Search</h3>
                         </div>
                         <div class="header-item @(!roomTabToggle ? "selected-header-item" : string.Empty)"
@@ -89,10 +89,7 @@
                 else
                 {
                     <div class="party-stats-wrapper">
-                        <span class="party-stats-title">Party Stats</span>
-                        <div>
-                            <TypeIcons PokemonTypes=PokemonTypes.PokemonTypesCollection IconSize=40 />
-                        </div>
+                        <PartyStats PartyPokemon=@RoomState.Value.PokemonParty.Cards.Values />
                     </div>
                     <div class="pokemon-party-wrapper">
                         @if (RoomState.Value.PokemonParty.Cards.Any())
@@ -138,7 +135,10 @@
                                         <div class="party-card-stats">
                                             @foreach(var stat in partyCard.Value.Stats)
                                             {
-                                                <div class="party-card-stat-wrapper">
+                                                <div class="party-card-stat-wrapper @(
+                                                        partyCard.Value.Stats.Select (x => x.Base).Max() == stat.Base ? "party-card-stats-top-stat" : 
+                                                        partyCard.Value.Stats.Select (x => x.Base).Min() == stat.Base ? "party-card-stats-bottom-stat" : string.Empty
+                                                    )">
                                                     <div class="party-card-stat-label">@stat.Name.ToDisplayName()</div>  
                                                     <div class="party-card-stat-value">@stat.Base</div>  
                                                 </div>
@@ -157,9 +157,6 @@
                         }
                         </div>  
                 }
-            </div>
-            <div class="pokemon-footer-wrapper">
-                <h1>howdy B)</h1>
             </div>
         </div>
         <div class="chat-wrapper">

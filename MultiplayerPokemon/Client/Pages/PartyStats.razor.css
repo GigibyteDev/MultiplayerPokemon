@@ -1,0 +1,91 @@
+﻿
+.party-stats-inner-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 2em;
+    height: 100%;
+    align-items: center;
+    flex-direction: column;
+}
+
+.party-stats-title {
+    font-size: large;
+    font-weight: bold;
+}
+
+.party-stats-icon-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.party-stats-icon{
+    width: 18%;
+    margin-bottom: .6em;
+    display: flex;
+    justify-content: center;
+}
+
+.party-stats-type-img{
+}
+
+.party-stats-icon-party-offensive-covered {
+    opacity: 0.4;
+}
+
+.party-stats-icon-party-defensively-open {
+    outline: 2px solid red;
+    border-radius: 50px;
+}
+
+.party-stats-icon-pokemon-defensive-strength {
+}
+
+.party-stats-icon-pokemon-defensive-weakness {
+    opacity: 0.4;
+}
+
+.defense-icon {
+    position:fixed;
+    margin-top: 1.2em;
+    background-color: white;
+    height: 1.2em;
+    width: 1.2em;
+}
+
+.positive-defense-icon {
+    margin-left: -1em;
+}
+
+.party-stats-total {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 4em;
+    width: 100%;
+}
+
+.party-stat-item {
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
+.party-stat-item-label {
+    font-weight: bold;
+}
+
+.party-stat-item-value {
+    font-size: x-large;
+}
+
+.party-stat-max-total {
+    color: coral
+}
+
+.party-stat-min-total {
+    color: cornflowerblue;
+}
+

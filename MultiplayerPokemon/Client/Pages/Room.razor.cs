@@ -157,5 +157,15 @@ namespace MultiplayerPokemon.Client.Pages
         private void HandleDragLeave()
         {
         }
+
+        protected override void OnInitialized()
+        {
+            if (RoomState.Value is not null && RoomState.Value.PokemonParty.Cards.Any())
+            {
+                var result = TypeRelationshipCalculator.CalculateTypeRelationsPokemon(RoomState.Value.PokemonParty.Cards.First().Value.Types);
+            }
+
+            base.OnInitialized();
+        }
     }
 }

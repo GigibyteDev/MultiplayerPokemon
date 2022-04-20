@@ -66,16 +66,10 @@
     background-color: #121212;
     margin-top: -3em;
     margin-left: -1.2em;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
     padding-top: 3em;
-}
-
-.party-stats-title{
-    font-size: large;
-    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .pokemon-header-body-wrapper {
@@ -344,6 +338,14 @@ h1{
     width: 100%;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.party-card-stats-top-stat{
+    color: coral;
+}
+
+.party-card-stats-bottom-stat{
+    color: cornflowerblue;
 }
 
 .party-card-stat-wrapper {
