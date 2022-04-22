@@ -89,3 +89,27 @@
     color: cornflowerblue;
 }
 
+.party-stats-buttons{
+    display: flex;
+}
+
+.party-stats-button {
+    margin: 1em;
+    background-color: #2F4562
+}
+
+.party-stats-remove-button {
+    background-color: indianred;
+    color: white;
+}
+
+.party-stats-data-button {
+    background-color: #2F4562;
+    color: white;
+}
+
+.party-stats-button-disabled {
+    background-color: #9E9E9E;
+    color: white;
+    cursor: default;
+}

@@ -31,11 +31,11 @@ namespace MultiplayerPokemon.Client.Pages
         [Inject]
         private IState<PokemonSearchDataState> SearchDataState { get; set; }
 
-
         private string messageText = string.Empty;
         private string pokemonId = "Pikachu";
         private bool roomTabToggle = true;
         private int currentlyHoveringCardId = -1;
+
         private void ToggleToSearch()
         {
             roomTabToggle = true;
@@ -126,12 +126,32 @@ namespace MultiplayerPokemon.Client.Pages
             }
         }
 
-        private void HandleOnCardClick(string cardPokedexId)
+        private void HandleOnCardClick(int cardID)
         {
-            pokemonId = cardPokedexId.ToDisplayName();
+            if (RoomState.Value.SelectedCards.Contains(cardID))
+            {
+                Dispatcher.Dispatch(new DeselectCardAction(cardID));
+            }
+            else
+            {
+                Dispatcher.Dispatch(new SelectCardAction(cardID));
+            }
+        }
+
+        private void HandleGetPokemonAndSwitchTab(string cardPokedexId)
+        {
             HandleGetPokemon(cardPokedexId);
             ToggleToSearch();
         }
+
+        private void HandleRemoveSelectedPokemonFromParty()
+        {
+            foreach(int id in RoomState.Value.SelectedCards)
+            {
+                HandleRemoveCardFromParty(id);
+            }
+        }
+
         private async void HandleDrop(int cardID)
         {
             if (ConnectionState.Value?.Connection is not null && RoomState.Value is not null)

@@ -89,21 +89,26 @@
                 else
                 {
                     <div class="party-stats-wrapper">
-                        <PartyStats PartyPokemon=@RoomState.Value.PokemonParty.Cards.Values />
+                        <PartyStats 
+                            HandleDeletePokemon=@HandleRemoveSelectedPokemonFromParty 
+                            HandleViewPokemonInfo=@HandleGetPokemonAndSwitchTab 
+                            PartyPokemon=@(RoomState.Value.SelectedCards.Any() ? RoomState.Value.PokemonParty.Cards.Where(x => RoomState.Value.SelectedCards.Contains(x.Key)).Select(y => y.Value) : RoomState.Value.PokemonParty.Cards.Values)
+                            AnyPokemonSelected=@RoomState.Value.SelectedCards.Any()
+                        />
                     </div>
                     <div class="pokemon-party-wrapper">
                         @if (RoomState.Value.PokemonParty.Cards.Any())
                         {
                             @foreach(var partyCard in RoomState.Value.PokemonParty.Cards.OrderBy(c => c.Key))
                             {
-                                <div class="pokemon-card" 
+                                <div class="pokemon-card @(RoomState.Value.SelectedCards.Contains(partyCard.Key) ? "card-selected" : string.Empty)" 
                                         draggable="true"
                                         ondragover="event.preventDefault();"
                                         @ondrop="() => HandleDrop(partyCard.Key)"
                                         @ondragstart="() => HandleDragStart(partyCard.Key)"
                                         @ondragenter="() => HandleDragEnter(partyCard.Key)"
                                         @ondragleave="() => HandleDragLeave()"
-                                        @onclick="() => HandleOnCardClick(partyCard.Value.Name)"
+                                        @onclick="() => HandleOnCardClick(partyCard.Key)"
                                         @onmousewheel="() => HandleRemoveCardFromParty(partyCard.Key)"
                                 >
                                     <div class="pokemon-card-flex-wrapper">

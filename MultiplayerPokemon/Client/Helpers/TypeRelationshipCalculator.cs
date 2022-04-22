@@ -19,24 +19,24 @@ namespace MultiplayerPokemon.Client.Helpers
             {
                 foreach(PokemonTypes type in PokemonTypes.PokemonTypesCollection)
                 {
+                    List<PartyCoverage> coveragesForType = new List<PartyCoverage>();
                     if (calcAllResults.All(x =>
                         x.CalculatedRelationalTypes.Single(y => y.Type.Id == type.Id).DefenseTier == TypeDefenseTiers.DefensiveWeakness ||
                         x.CalculatedRelationalTypes.Single(y => y.Type.Id == type.Id).DefenseTier == TypeDefenseTiers.DefensiveWeaknessDouble
                     ))
                     {
-                        calcFinalResult.TypesCoverage.Add(type, PartyCoverage.DefensivelyOpen);
+                        coveragesForType.Add(PartyCoverage.DefensivelyOpen);
                     }
-                    else if (calcAllResults.Any(x =>
+
+                    if (calcAllResults.Any(x =>
                         x.CalculatedRelationalTypes.Single(y => y.Type.Id == type.Id).OffenseTier == TypeOffenseTiers.OffensiveStrength ||
                         x.CalculatedRelationalTypes.Single(y => y.Type.Id == type.Id).OffenseTier == TypeOffenseTiers.OffensiveStrengthDouble
                     ))
                     {
-                        calcFinalResult.TypesCoverage.Add(type, PartyCoverage.OffensivelyCovered);
+                        coveragesForType.Add(PartyCoverage.OffensivelyCovered);
                     }
-                    else
-                    {
-                        calcFinalResult.TypesCoverage.Add(type, PartyCoverage.NotCovered);
-                    }
+                    
+                    calcFinalResult.TypesCoverage.Add(type, coveragesForType);
                 }
             }
             catch (Exception ex)
@@ -172,11 +172,11 @@ namespace MultiplayerPokemon.Client.Helpers
 
     public class PartyTypeCoverageCalculationResults
     {
-        public Dictionary<PokemonTypes, PartyCoverage> TypesCoverage { get; set; }
+        public Dictionary<PokemonTypes, List<PartyCoverage>> TypesCoverage { get; set; }
 
         public PartyTypeCoverageCalculationResults()
         {
-            TypesCoverage = new Dictionary<PokemonTypes, PartyCoverage>();
+            TypesCoverage = new Dictionary<PokemonTypes, List<PartyCoverage>>();
         }
     }
 

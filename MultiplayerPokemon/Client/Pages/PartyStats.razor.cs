@@ -9,6 +9,15 @@ namespace MultiplayerPokemon.Client.Pages
         [Parameter]
         public IEnumerable<PartyCardModel> PartyPokemon { get; set; }
 
+        [Parameter]
+        public Action HandleDeletePokemon { get; set; }
+
+        [Parameter]
+        public Action<string> HandleViewPokemonInfo { get; set; }
+
+        [Parameter]
+        public bool AnyPokemonSelected { get; set; }
+
         private PartyTypeCoverageCalculationResults? partyTypes { get; set; } = null;
 
         private List<PokemonStat> totalStats = new List<PokemonStat>();

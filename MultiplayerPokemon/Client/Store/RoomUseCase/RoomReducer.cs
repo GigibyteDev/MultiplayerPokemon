@@ -79,6 +79,19 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
         public static RoomState RemovePokemonFromPartyAction(RoomState state, RemovePokemonFromPartyAction action)
         {
             state.PokemonParty.Cards.RemoveFromCollection(action.CardId);
+            if (state.SelectedCards.Contains(action.CardId))
+            {
+                state.SelectedCards.Remove(action.CardId);
+            }
+            
+            for (int i = 0; i < state.SelectedCards.Count(); i++)
+            {
+                if (state.SelectedCards[i] > action.CardId)
+                {
+                    state.SelectedCards[i]--;
+                }
+            }
+
             return new RoomState
             (
                 previousState: state
@@ -89,6 +102,20 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
         public static RoomState PokemonSwappedAction(RoomState state, PokemonSwappedAction action)
         {
             state.PokemonParty.Cards.Swap(action.CurrentPosition, action.NewPosition);
+            if (!state.SelectedCards.Contains(action.CurrentPosition) || !state.SelectedCards.Contains(action.NewPosition))
+            {
+                if (state.SelectedCards.Contains(action.CurrentPosition))
+                {
+                    state.SelectedCards.Remove(action.CurrentPosition);
+                    state.SelectedCards.Add(action.NewPosition);
+                }
+                else if (state.SelectedCards.Contains(action.NewPosition))
+                {
+                    state.SelectedCards.Remove(action.NewPosition);
+                    state.SelectedCards.Add(action.CurrentPosition);
+                }
+            }
+           
             return new RoomState
             (
                 previousState: state
@@ -165,6 +192,28 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             (
                 previousState: state,
                 searchedPokemonShiny: action.IsShiny
+            );
+        }
+
+        [ReducerMethod]
+        public static RoomState SelectCardAction(RoomState state, SelectCardAction action)
+        {
+            state.SelectedCards.Add(action.CardId);
+
+            return new RoomState
+            (
+                previousState: state
+            );
+        }
+
+        [ReducerMethod]
+        public static RoomState DeselectCardAction(RoomState state, DeselectCardAction action)
+        {
+            state.SelectedCards.Remove(action.CardId);
+
+            return new RoomState
+            (
+                previousState: state
             );
         }
     }

@@ -10,10 +10,10 @@
                 @foreach(var type in partyTypes.TypesCoverage)
                 {
                     <div class="party-stats-icon">
-                        <img class="@(
-                            type.Value == PartyCoverage.OffensivelyCovered ? "party-stats-icon-party-offensive-covered" : 
-                            type.Value == PartyCoverage.DefensivelyOpen ? "party-stats-icon-party-defensively-open" :
-                            string.Empty)" style="width: 35px" src=@(@type.Key.ImageURI(35)) alt="@type.Key.DisplayValue" />
+                        <img class=
+                            "@(type.Value.Contains(PartyCoverage.OffensivelyCovered) ? "party-stats-icon-party-offensive-covered" : string.Empty)
+                             @(type.Value.Contains(PartyCoverage.DefensivelyOpen) ? "party-stats-icon-party-defensively-open" : string.Empty)"
+                            style="width: 35px" src=@(@type.Key.ImageURI(35)) alt="@type.Key.DisplayValue" />
                     </div>
                 }
             }
@@ -34,6 +34,20 @@
                         @stat.Base
                     </div>
                 </div>
+            }
+        </div>
+        <div class="party-stats-buttons">
+            @if (AnyPokemonSelected)
+            {
+                @if (PartyPokemon.Count() == 1)
+                {
+                    <button class="party-stats-button party-stats-data-button" type="button">View Pokemon Data</button>
+                }
+                else
+                {
+                    <button class="party-stats-button party-stats-button-disabled" type="button">View Pokemon Data</button>
+                }
+                <button class="party-stats-button party-stats-remove-button" type="button">Remove Selected Pokemon</button>
             }
         </div>
     }

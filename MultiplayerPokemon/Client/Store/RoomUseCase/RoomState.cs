@@ -19,6 +19,7 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
         public bool ErrorGettingSearchedPokemon { get; set; }
         public string SearchedPokemonGender { get; set; }
         public bool SearchedPokemonShiny { get; set; }
+        public List<int> SelectedCards { get; set; }
 
         public RoomState()
         {
@@ -34,6 +35,7 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             ErrorGettingSearchedPokemon = false;
             SearchedPokemonGender = "male";
             SearchedPokemonShiny = false;
+            SelectedCards = new List<int>();
         }
 
         public RoomState(RoomModel model, RoomPartyModel roomPartyModel)
@@ -50,6 +52,7 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             ErrorGettingSearchedPokemon = false;
             SearchedPokemonGender = "male";
             SearchedPokemonShiny = false;
+            SelectedCards = new List<int>();
         }
 
         public RoomState(
@@ -65,7 +68,8 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             bool? isLoadingSearchedPokemon = null,
             bool? errorGettingSearchedPokemon = null,
             string? searchedPokemonGender = null,
-            bool? searchedPokemonShiny = null
+            bool? searchedPokemonShiny = null,
+            List<int>? selectedCards = null
             )
         {
             RoomName = roomName ?? previousState.RoomName;
@@ -80,6 +84,7 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
             ErrorGettingSearchedPokemon = errorGettingSearchedPokemon ?? previousState.ErrorGettingSearchedPokemon;
             SearchedPokemonShiny = searchedPokemonShiny ?? previousState.SearchedPokemonShiny;
             SearchedPokemonGender = searchedPokemonGender ?? previousState.SearchedPokemonGender;
+            SelectedCards = selectedCards ?? previousState.SelectedCards;
         }
     }
 }
