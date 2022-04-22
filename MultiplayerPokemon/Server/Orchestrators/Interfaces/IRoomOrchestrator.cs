@@ -15,6 +15,7 @@ namespace MultiplayerPokemon.Server.Orchestrators.Interfaces
         Task<IEnumerable<RoomData>> GetRoomListData();
         Task<bool> AddPokemonToParty(PokemonPartyDataModel partyModel, string roomName);
         Task<bool> RemovePokemonFromParty(int position, string roomName);
+        Task<bool> RemoveMultiplePokemonFromParty(IEnumerable<int> positions, string roomName);
         Task<bool> SwapPokemonInParty(int originalSpot, int newSpot, string roomName);
     }
 }

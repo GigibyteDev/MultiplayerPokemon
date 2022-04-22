@@ -28,6 +28,29 @@
             return false;
         }
 
+        public static bool RemoveMultipleFromCollection<T>(this IDictionary<int, T> collection, IEnumerable<int> positions)
+        {
+            bool allRemoved = true;
+            foreach (int position in positions.OrderByDescending(x => x))
+            {
+                if (collection.ContainsKey(position))
+                {
+                    for (int i = position; i < collection.Count - 1; i++)
+                    {
+                        collection[i] = collection[i + 1];
+                    }
+
+                    collection.Remove(collection.Count - 1);
+                }
+                else
+                {
+                    allRemoved = false;
+                }
+            }
+
+            return allRemoved;
+        }
+
         public static bool Swap<T>(this IDictionary<int, T> collection, int currentPosition, int newPosition)
         {
             if (collection.ContainsKey(currentPosition) && collection.ContainsKey(newPosition))

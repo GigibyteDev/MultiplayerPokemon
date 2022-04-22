@@ -74,6 +74,11 @@ namespace MultiplayerPokemon.Server.Orchestrators
             return await roomRepository.RemovePokemonFromParty(position, roomName);
         }
 
+        public async Task<bool> RemoveMultiplePokemonFromParty(IEnumerable<int> positions, string roomName)
+        {
+            return await roomRepository.RemoveMultiplePokemonFromParty(positions, roomName);
+        }
+
         public async Task<bool> SwapPokemonInParty(int originalSpot, int newSpot, string roomName)
         {
             return await roomRepository.SwapPokemonInParty(originalSpot, newSpot, roomName);

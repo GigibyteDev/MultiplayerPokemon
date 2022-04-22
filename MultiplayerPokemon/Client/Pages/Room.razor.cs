@@ -138,17 +138,21 @@ namespace MultiplayerPokemon.Client.Pages
             }
         }
 
-        private void HandleGetPokemonAndSwitchTab(string cardPokedexId)
+        private void HandleGetPokemonAndSwitchTab()
         {
-            HandleGetPokemon(cardPokedexId);
-            ToggleToSearch();
+            if (RoomState.Value is not null && RoomState.Value.PokemonParty.Cards.Any() && RoomState.Value.SelectedCards.Any())
+            {
+                HandleGetPokemon(RoomState.Value.PokemonParty.Cards.First(p => p.Key == RoomState.Value.SelectedCards.First()).Value.Name);
+                ToggleToSearch();
+            }
         }
 
-        private void HandleRemoveSelectedPokemonFromParty()
+        private async void HandleRemoveSelectedPokemonFromParty()
         {
-            foreach(int id in RoomState.Value.SelectedCards)
+            if (ConnectionState.Value?.Connection is not null && RoomState.Value is not null && RoomState.Value.SelectedCards.Any())
             {
-                HandleRemoveCardFromParty(id);
+                await ConnectionState.Value.Connection.SendCoreAsync("RemoveMultiplePokemonFromParty", new object[] { RoomState.Value.SelectedCards, RoomState.Value.RoomName });
+                Dispatcher.Dispatch(new RemoveMultiplePokemonFromPartyAction(RoomState.Value.SelectedCards));
             }
         }
 
@@ -159,7 +163,7 @@ namespace MultiplayerPokemon.Client.Pages
             Dispatcher.Dispatch(new PokemonSwappedAction(currentlyHoveringCardId, cardID));
         }
 
-        private async void HandleRemoveCardFromParty(int cardID)
+        private async Task HandleRemoveCardFromParty(int cardID)
         {
             if (ConnectionState.Value?.Connection is not null && RoomState.Value is not null)
                 await ConnectionState.Value.Connection.SendCoreAsync("RemovePokemonFromParty", new object[] { cardID, RoomState.Value.RoomName });
@@ -170,11 +174,12 @@ namespace MultiplayerPokemon.Client.Pages
         {
             currentlyHoveringCardId = cardID;
         }
+
         private void HandleDragEnter(int cardID)
         {
         }
 
-        private void HandleDragLeave()
+        private void HandleDragLeave(int cardID)
         {
         }
 

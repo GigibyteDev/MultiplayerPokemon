@@ -147,5 +147,15 @@ namespace MultiplayerPokemon.Server.Repositories
 
             return false;
         }
+
+        public async Task<bool> RemoveMultiplePokemonFromParty(IEnumerable<int> positions, string roomName)
+        {
+            if (GetRoomIfExists(roomName, out RoomModel room))
+            {
+                return room.PokemonParty.Pokemon.RemoveMultipleFromCollection(positions);
+            }
+
+            return false;
+        }
     }
 }

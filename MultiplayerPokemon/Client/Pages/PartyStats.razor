@@ -1,58 +1,76 @@
 ﻿@using MultiplayerPokemon.Shared.Enums
 
-<span class="party-stats-title">Party Stats</span>
-<div class="party-stats-inner-wrapper">
-    @if (PartyPokemon is not null && PartyPokemon.Any())
+@if (PartyPokemon is not null)
+{
+    @if (AnyPokemonSelected)
     {
-        <div class="party-stats-icon-wrapper">
-            @if (partyTypes is not null)
-            {
-                @foreach(var type in partyTypes.TypesCoverage)
-                {
-                    <div class="party-stats-icon">
-                        <img class=
-                            "@(type.Value.Contains(PartyCoverage.OffensivelyCovered) ? "party-stats-icon-party-offensive-covered" : string.Empty)
-                             @(type.Value.Contains(PartyCoverage.DefensivelyOpen) ? "party-stats-icon-party-defensively-open" : string.Empty)"
-                            style="width: 35px" src=@(@type.Key.ImageURI(35)) alt="@type.Key.DisplayValue" />
-                    </div>
-                }
-            }
-        </div>
-        <div class="party-stats-total">
-            @foreach(var stat in totalStats)
-            {
-                <div class="party-stat-item @(
-                    totalStats.Select(x => x.Base).Max() == stat.Base ? "party-stat-max-total" :
-                    totalStats.Select(x => x.Base).Min() == stat.Base ? "party-stat-min-total" :
-                    string.Empty
-                )">
-                    <div class="party-stat-item-label">
-                        @stat.Name.ToDisplayName()
-                    </div>
+        <span class="party-stats-title">@(PartyPokemon.Count()) Selected</span>
+        
+    }
+    else
+    {
+        <span class="party-stats-title">Party Stats</span>
+    }
 
-                    <div class="party-stat-item-value">
-                        @stat.Base
+    @if (PartyPokemon.Any())
+    {
+        <div class="party-stats-inner-wrapper">
+            <div class="party-stats-icon-wrapper">
+                @if (partyTypes is not null)
+                {
+                    @foreach(var type in partyTypes.TypesCoverage)
+                    {
+                        <div class="party-stats-icon">
+                            <img class=
+                                "@(type.Value.Contains(PartyCoverage.OffensivelyCovered) ? "type-covered-fade-out" : "type-not-covered-fade-in")
+                                 @(type.Value.Contains(PartyCoverage.DefensivelyOpen) ? "party-stats-icon-party-defensively-open" : string.Empty)"
+                                style="width: 35px" src=@(@type.Key.ImageURI(35)) alt="@type.Key.DisplayValue" />
+                        </div>
+                    }
+                }
+            </div>
+            <div class="party-stats-total">
+                @foreach(var stat in totalStats)
+                {
+                    <div class="party-stat-item @(
+                        totalStats.Select(x => x.Base).Max() == stat.Base ? "party-stat-max-total" :
+                        totalStats.Select(x => x.Base).Min() == stat.Base ? "party-stat-min-total" :
+                        string.Empty
+                    )">
+                        <div class="party-stat-item-label">
+                            @stat.Name.ToDisplayName()
+                        </div>
+
+                        <div class="party-stat-item-value">
+                            @stat.Base
+                        </div>
                     </div>
-                </div>
-            }
-        </div>
-        <div class="party-stats-buttons">
-            @if (AnyPokemonSelected)
-            {
-                @if (PartyPokemon.Count() == 1)
-                {
-                    <button class="party-stats-button party-stats-data-button" type="button">View Pokemon Data</button>
                 }
-                else
+            </div>
+            <div class="party-stats-buttons">
+                @if (AnyPokemonSelected)
                 {
-                    <button class="party-stats-button party-stats-button-disabled" type="button">View Pokemon Data</button>
+                    @if (PartyPokemon.Count() == 1)
+                    {
+                        <button class="party-stats-button party-stats-data-button" type="button" @onclick=HandleViewPokemonInfo>
+                            <i class="bi bi-search" />
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="party-stats-button party-stats-button-disabled" type="button">
+                            <i class="bi bi-search" />
+                        </button>
+                    }
+                    <button class="party-stats-button party-stats-remove-button" type="button" @onclick=HandleDeletePokemon>
+                            <i class="bi bi-x-lg" />
+                    </button>
                 }
-                <button class="party-stats-button party-stats-remove-button" type="button">Remove Selected Pokemon</button>
-            }
+            </div>
         </div>
     }
     else
     {
         <h4>Awaiting Pokemon to be added...</h4>
     }
-</div>
+}

@@ -13,7 +13,7 @@ namespace MultiplayerPokemon.Client.Pages
         public Action HandleDeletePokemon { get; set; }
 
         [Parameter]
-        public Action<string> HandleViewPokemonInfo { get; set; }
+        public Action HandleViewPokemonInfo { get; set; }
 
         [Parameter]
         public bool AnyPokemonSelected { get; set; }

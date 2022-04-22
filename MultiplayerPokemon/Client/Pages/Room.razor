@@ -107,9 +107,8 @@
                                         @ondrop="() => HandleDrop(partyCard.Key)"
                                         @ondragstart="() => HandleDragStart(partyCard.Key)"
                                         @ondragenter="() => HandleDragEnter(partyCard.Key)"
-                                        @ondragleave="() => HandleDragLeave()"
+                                        @ondragleave="() => HandleDragLeave(partyCard.Key)"
                                         @onclick="() => HandleOnCardClick(partyCard.Key)"
-                                        @onmousewheel="() => HandleRemoveCardFromParty(partyCard.Key)"
                                 >
                                     <div class="pokemon-card-flex-wrapper">
                                         <div class="party-card-icons">

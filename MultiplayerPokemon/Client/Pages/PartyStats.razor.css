@@ -26,23 +26,9 @@
     justify-content: center;
 }
 
-.party-stats-type-img{
-}
-
-.party-stats-icon-party-offensive-covered {
-    opacity: 0.4;
-}
-
 .party-stats-icon-party-defensively-open {
     outline: 2px solid red;
     border-radius: 50px;
-}
-
-.party-stats-icon-pokemon-defensive-strength {
-}
-
-.party-stats-icon-pokemon-defensive-weakness {
-    opacity: 0.4;
 }
 
 .defense-icon {
@@ -95,7 +81,16 @@
 
 .party-stats-button {
     margin: 1em;
-    background-color: #2F4562
+    padding: 1em;
+    border-radius: 50px;
+    width: 2em;
+    height: 2em;
+    background-color: #2F4562;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bolder;
+    font-size: x-large;
 }
 
 .party-stats-remove-button {
@@ -112,4 +107,44 @@
     background-color: #9E9E9E;
     color: white;
     cursor: default;
+}
+
+.type-covered-fade-out {
+    animation-name: typeCoveredFadeOut;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    pointer-events: none;
+}
+
+.type-not-covered-fade-in {
+    animation-name: typeNotCoveredFadeIn;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    pointer-events: none;
+}
+
+@keyframes typeCoveredFadeOut {
+    0% {
+        opacity: 1;
+        transform: translateZ(0px);
+    }
+
+    100% {
+        opacity: 0.4;
+        transform: translateZ(500px);
+    }
+}
+
+@keyframes typeNotCoveredFadeIn {
+    0% {
+        opacity: 0.4;
+        transform: translateZ(500px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateZ(0px);
+    }
 }

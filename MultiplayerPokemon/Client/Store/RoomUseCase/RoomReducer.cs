@@ -99,6 +99,33 @@ namespace MultiplayerPokemon.Client.Store.RoomUseCase
         }
 
         [ReducerMethod]
+        public static RoomState RemoveMultiplePokemonFromParty(RoomState state, RemoveMultiplePokemonFromPartyAction action)
+        {
+            state.PokemonParty.Cards.RemoveMultipleFromCollection(action.Positions);
+
+            foreach(int position in action.Positions.OrderByDescending(p => p))
+            {
+                if (state.SelectedCards.Contains(position))
+                {
+                    state.SelectedCards.Remove(position);
+                }
+
+                for (int i = 0; i < state.SelectedCards.Count(); i++)
+                {
+                    if (state.SelectedCards[i] > position)
+                    {
+                        state.SelectedCards[i]--;
+                    }
+                }
+            }
+
+            return new RoomState
+            (
+                previousState: state
+            );
+        }
+
+        [ReducerMethod]
         public static RoomState PokemonSwappedAction(RoomState state, PokemonSwappedAction action)
         {
             state.PokemonParty.Cards.Swap(action.CurrentPosition, action.NewPosition);

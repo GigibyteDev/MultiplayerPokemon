@@ -62,6 +62,13 @@ namespace MultiplayerPokemon.Client.Store.SignalRConnectionUseCase
                     action.UpdateState();
                 });
 
+                connection.On<IEnumerable<int>>("RemoveMultiplePokemonFromParty", (positions) =>
+                {
+                    Console.WriteLine($"Removing Multple ids from party");
+                    dispatcher.Dispatch(new RemoveMultiplePokemonFromPartyAction(positions));
+                    action.UpdateState();
+                });
+
                 connection.On<int, int>("PokemonSwapped", (currentPos, newPos) =>
                 {
                     Console.WriteLine($"Swapping Pokemon in current position {currentPos} to {newPos}");

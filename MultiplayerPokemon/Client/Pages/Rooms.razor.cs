@@ -32,19 +32,26 @@ namespace MultiplayerPokemon.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            var result = await Http.GetFromJsonAsync<IEnumerable<RoomData>>("GetRoomListData");
-
-            roomData = result?.ToList() ?? new List<RoomData>();
+            await RefreshRoomData();
 
             await base.OnInitializedAsync();
         }
 
-        private void HandleOnRoomConnect(string roomName)
+        private async Task RefreshRoomData()
+        {
+            var result = await Http.GetFromJsonAsync<IEnumerable<RoomData>>("GetRoomListData");
+
+            roomData = result?.ToList() ?? new List<RoomData>();
+        }
+
+        private async void HandleOnRoomConnect(string roomName)
         {
             if (ConnectionState.Value?.Connection is not null && !string.IsNullOrWhiteSpace(roomName))
             {
-                ConnectionState.Value.Connection.SendCoreAsync("ConnectToRoom", new object[] { roomName });
+                await ConnectionState.Value.Connection.SendCoreAsync("ConnectToRoom", new object[] { roomName });
             }
+
+            await RefreshRoomData();
         }
 
         private async void HandleAddRoom()

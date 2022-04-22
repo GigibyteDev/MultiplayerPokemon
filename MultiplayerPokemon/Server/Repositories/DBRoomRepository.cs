@@ -42,6 +42,11 @@ namespace MultiplayerPokemon.Server.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<bool> RemoveMultiplePokemonFromParty(IEnumerable<int> positions, string roomName)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> RemovePokemonFromParty(int position, string roomName)
         {
             throw new NotImplementedException();

@@ -168,6 +168,12 @@ namespace MultiplayerPokemon.Server.Hubs
             await InvokeRemovePokemonFromParty(position, roomName);
         }
 
+        public async Task RemoveMultiplePokemonFromParty(IEnumerable<int> positions, string roomName)
+        {
+            await roomOrchestrator.RemoveMultiplePokemonFromParty(positions, roomName);
+            await InvokeRemoveMultiplePokemonFromParty(positions, roomName);
+        }
+
         public async Task SwapPokemon(int currentPos, int newPos, string RoomName)
         {
             await roomOrchestrator.SwapPokemonInParty(currentPos, newPos, RoomName);
@@ -177,6 +183,11 @@ namespace MultiplayerPokemon.Server.Hubs
         private async Task InvokeRemovePokemonFromParty(int position, string roomName)
         {
             await Clients.OthersInGroup(roomName).SendAsync("RemovePokemonFromParty", position);
+        }
+
+        private async Task InvokeRemoveMultiplePokemonFromParty(IEnumerable<int> positions, string roomName)
+        {
+            await Clients.OthersInGroup(roomName).SendAsync("RemoveMultiplePokemonFromParty", positions);
         }
 
         private async Task InvokeDisconnectFromRoom(IEnumerable<string> connectionIds)
