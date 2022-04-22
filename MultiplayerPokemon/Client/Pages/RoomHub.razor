@@ -1,23 +1,38 @@
 ﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 <div class="body-wrapper">
-    @if (ConnectionState.Value?.Connection is not null && ConnectionState.Value.Connection.State == Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
+    @if (ConnectionState.Value is not null)
     {
-        @if (string.IsNullOrWhiteSpace(RoomState.Value?.RoomName))
+        @if (ConnectionState.Value.Loading)
         {
-            <div class="rooms-component-wrapper">
-                <Rooms />
+            <div>
+                <h2>Connecting...</h2>
             </div>
         }
-        else
+        else if (ConnectionState.Value?.Connection is null)
         {
-            <Room />
+            <div>
+                <h2>Establishing Connection</h2>
+            </div>
+        }
+        else if (ConnectionState.Value.Connection.State == Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
+        {
+            @if (string.IsNullOrWhiteSpace(RoomState.Value?.RoomName))
+            {
+                <div class="rooms-component-wrapper">
+                    <Rooms />
+                </div>
+            }
+            else
+            {
+                <Room />
+            }
         }
     }
     else
     {
-        <div>
-            <h2>No Connection Found...</h2>
+         <div>
+            <h2>Connection Not Found...</h2>
         </div>
     }
 </div>

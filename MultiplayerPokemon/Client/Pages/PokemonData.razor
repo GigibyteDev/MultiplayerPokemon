@@ -52,7 +52,7 @@
                             }
                         </div>
                     }
-                    <div class="high-button" @onclick=(HandleFlipSet)>
+                    <div class="high-button" @onclick=(HandlePokemonBounceAnimation)>
                         @if (IsFront)
                         {
                             <i class="bi bi-arrow-clockwise"></i>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="top-layer-info">
                         <i class="bi bi-caret-left-square-fill next-icon" @onclick='() => GetNextPokemon("previous")'></i>
-                        <img id="pokemonSprite" class="pokemon-sprite" src="@ImgUri" alt="pokemon view" />
+                        <img id="pokemonSprite" class="pokemon-sprite @(bounceAnimationClass)" src="@ImgUri" alt="pokemon view" />
                         <i class="bi bi-caret-right-square-fill next-icon" @onclick='() => GetNextPokemon("next")'></i>
                     </div>
                     <div class="pokemon-physical-stats">

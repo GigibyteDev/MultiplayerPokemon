@@ -5,7 +5,7 @@
 
 <div class="rooms-header-title">
     <h3 class="rooms-header-title-text">Rooms</h3>
-    <i class="bi bi-arrow-repeat refresh-button" @onclick=OnInitializedAsync></i>
+    <i class="bi bi-arrow-repeat refresh-button @(refreshAnimationClass)" @onclick=HandleRefreshClick></i>
 </div>
 
 <div class="room-list-with-form-wrapper">

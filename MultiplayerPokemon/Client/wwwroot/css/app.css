@@ -58,6 +58,101 @@ input {
     display: none !important;
 }
 
+.loading-animation-wrapper {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.pokeball-loading-img {
+    width: 100%;
+}
+
+.loading-img-wrapper {
+    width: 6em;
+}
+
+.bounce-animation {
+    animation-name: bounce;
+    animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+    animation-duration: 1.8s;
+    animation-iteration-count: infinite;
+}
+
+.spin-animation {
+    animation-name: spin;
+    animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+    animation-duration: 1.8s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    10% {
+        transform: rotate(-6deg);
+    }
+
+    50% {
+        transform: rotate(725deg);
+    }
+
+    57% {
+        transform: rotate(715deg);
+    }
+
+    64% {
+        transform: rotate(721deg);
+    }
+
+    70% {
+        transform: rotate(720deg);
+    }
+
+    99% {
+        transform: rotate(720deg);
+    }
+
+    100% {
+        transform: rotate(720deg);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(1, 1) translateY(0);
+    }
+
+    10% {
+        transform: scale(1.1, 0.9) translateY(0);
+    }
+
+    30% {
+        transform: scale(0.9, 1.1) translateY(-100px);
+    }
+
+    50% {
+        transform: scale(1.05, 0.95) translateY(0);
+    }
+
+    57% {
+        transform: scale(1, 1) translateY(-7px);
+    }
+
+    64% {
+        transform: scale(1, 1) translateY(0);
+    }
+
+    100% {
+        transform: scale(1, 1) translateY(0);
+    }
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

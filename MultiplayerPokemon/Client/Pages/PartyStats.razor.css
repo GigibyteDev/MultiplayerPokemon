@@ -13,7 +13,14 @@
     font-weight: bold;
 }
 
-.party-stats-icon-wrapper{
+.no-pokemon-stats-message{
+    color: #646464;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.party-stats-icon-wrapper {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;

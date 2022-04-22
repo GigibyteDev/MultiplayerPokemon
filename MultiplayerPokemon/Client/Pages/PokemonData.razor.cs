@@ -42,6 +42,8 @@ namespace MultiplayerPokemon.Client.Pages
         }
 
         private bool IsFront { get; set; } = true;
+        private bool bounceAnimationLock = false;
+        private string bounceAnimationClass= string.Empty;
         private string ImgUri { get; set; } = string.Empty;
         private string PokemonSelectedDescription { get; set; }
 
@@ -75,6 +77,24 @@ namespace MultiplayerPokemon.Client.Pages
             get => RoomState.Value?.SearchedPokemonGender ?? "male";
         }
 
+        private async Task HandlePokemonBounceAnimation()
+        {
+            if (!bounceAnimationLock && CanFlip)
+            {
+                bounceAnimationLock = true;
+
+                bounceAnimationClass = "pokemon-bounce";
+
+                HandleFlipSet();
+
+                await Task.Delay(750);
+
+                bounceAnimationClass = string.Empty;
+
+                bounceAnimationLock = false;
+            }
+        }
+
         private void HandleShinyChange()
         {
             Dispatcher?.Dispatch(new UpdateSearchedPokemonShinyAction(!IsShiny));
@@ -93,8 +113,6 @@ namespace MultiplayerPokemon.Client.Pages
             {
                 IsFront = !IsFront;
                 UpdateImageURI();
-
-                // await JS.InvokeVoidAsync("add_animation", "pokemonSprite", "bounce");
             }
         }
 

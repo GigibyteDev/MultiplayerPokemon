@@ -26,6 +26,10 @@ namespace MultiplayerPokemon.Client.Pages
         [Inject]
         private IState<ConnectionState> ConnectionState { get; set; }
 
+        private bool canSpinFlag = true;
+
+        private string refreshAnimationClass = string.Empty;
+
         private string newRoomName = string.Empty;
 
         private List<RoomData> roomData = new List<RoomData>();
@@ -37,11 +41,35 @@ namespace MultiplayerPokemon.Client.Pages
             await base.OnInitializedAsync();
         }
 
+        private async Task handleRefreshAnimation()
+        {
+            if (canSpinFlag)
+            {
+                canSpinFlag = false;
+
+                refreshAnimationClass = "spin-animation";
+
+                StateHasChanged();
+
+                await Task.Delay(1000);
+
+                refreshAnimationClass = "";
+
+                canSpinFlag = true;
+            }
+        }
+
         private async Task RefreshRoomData()
         {
             var result = await Http.GetFromJsonAsync<IEnumerable<RoomData>>("GetRoomListData");
 
             roomData = result?.ToList() ?? new List<RoomData>();
+        }
+
+        private async void HandleRefreshClick()
+        {
+            await RefreshRoomData();
+            handleRefreshAnimation();
         }
 
         private async void HandleOnRoomConnect(string roomName)

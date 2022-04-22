@@ -7,3 +7,25 @@
     margin-left: 0em;
     height: 3.73em;
 }
+
+.loading-spin {
+    animation-name: loadingSpin;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+.search-button-icon{
+    display: flex;
+    animation-timing-function: linear;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes loadingSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

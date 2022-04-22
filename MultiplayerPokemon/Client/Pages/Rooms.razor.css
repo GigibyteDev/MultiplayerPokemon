@@ -122,3 +122,45 @@
     align-items: center;
     margin-left: 1em;
 }
+
+.spin-animation {
+    animation-name: spin;
+    animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+    animation-duration: 1.8s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    10% {
+        transform: rotate(-6deg);
+    }
+
+    50% {
+        transform: rotate(725deg);
+    }
+
+    57% {
+        transform: rotate(715deg);
+    }
+
+    64% {
+        transform: rotate(721deg);
+    }
+
+    70% {
+        transform: rotate(720deg);
+    }
+
+    99% {
+        transform: rotate(720deg);
+    }
+
+    100% {
+        transform: rotate(720deg);
+    }
+}

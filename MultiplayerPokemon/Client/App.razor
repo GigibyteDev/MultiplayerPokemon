@@ -4,6 +4,11 @@
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" >
+                <Authorizing>
+                    <div class="authorizing-user-message">
+                        <h2>Authorizing User...</h2>
+                    </div>
+                </Authorizing>
                 <NotAuthorized>
                     <h1>Sorry</h1>
                     <p>You're not authorized to reach this page. Please log in.</p>

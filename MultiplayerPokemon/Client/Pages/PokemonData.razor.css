@@ -170,7 +170,14 @@
     margin-bottom: 2em;
 }
 
-@keyframes bounce {
+.pokemon-bounce {
+    animation-name: pokemonBounce;
+    animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+    animation-duration: 0.75s;
+    animation-iteration-count: 1;
+}
+
+@keyframes pokemonBounce {
     0% {
         transform: scale(1, 1) translateY(0);
     }

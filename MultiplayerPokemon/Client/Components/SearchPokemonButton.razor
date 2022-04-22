@@ -3,7 +3,7 @@
     <button class="search-typeahead-button" @onclick="() => HandleGetPokemon(null)">
         @if (RoomState.Value.IsLoadingSearchedPokemon)
         {
-            <i class="bi bi-arrow-repeat" style="color: black; font-size: xx-large"></i>
+            <i class="search-button-icon bi bi-arrow-repeat loading-spin" style="color: black; font-size: xx-large"></i>
         }
         else if (RoomState.Value.ErrorGettingSearchedPokemon)
         {

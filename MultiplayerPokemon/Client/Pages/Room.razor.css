@@ -362,5 +362,9 @@ h1{
 }
 
 .party-card-gender-icon-wrapper{
-    font-size: x-large;
+    font-size: large;
+}
+
+.type-icons-list{
+    display: flex;
 }
