@@ -91,6 +91,7 @@ namespace MultiplayerPokemon.Client.Pages
                             Gender = RoomState.Value.SearchedPokemonGender, 
                             IsShiny = RoomState.Value.SearchedPokemonShiny
                         },
+                        RoomState.Value.SearchedPokemon.Name.ToDisplayName(),
                         RoomState.Value.RoomName
                     });
                 }
@@ -151,7 +152,12 @@ namespace MultiplayerPokemon.Client.Pages
         {
             if (ConnectionState.Value?.Connection is not null && RoomState.Value is not null && RoomState.Value.SelectedCards.Any())
             {
-                await ConnectionState.Value.Connection.SendCoreAsync("RemoveMultiplePokemonFromParty", new object[] { RoomState.Value.SelectedCards, RoomState.Value.RoomName });
+                await ConnectionState.Value.Connection.SendCoreAsync("RemoveMultiplePokemonFromParty", new object[] 
+                { 
+                    RoomState.Value.SelectedCards, 
+                    RoomState.Value.PokemonParty.Cards.Where(c => RoomState.Value.SelectedCards.Contains(c.Key)).Select(n => n.Value.Name.ToDisplayName()),
+                    RoomState.Value.RoomName 
+                });
                 Dispatcher.Dispatch(new RemoveMultiplePokemonFromPartyAction(RoomState.Value.SelectedCards));
             }
         }

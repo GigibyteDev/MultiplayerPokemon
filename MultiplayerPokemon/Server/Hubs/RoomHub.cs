@@ -110,7 +110,7 @@ namespace MultiplayerPokemon.Server.Hubs
                     };
 
                     await roomOrchestrator.AddMessageToRoom(newMessage, roomName);
-                    await InvokeMessageSentToRoom(newMessage, room.RoomName);
+                    await InvokeMessageSentToOthersInRoom(newMessage, room.RoomName);
                 }
                 else
                 {
@@ -153,12 +153,23 @@ namespace MultiplayerPokemon.Server.Hubs
             }
         }
 
-        public async Task AddPokemonToParty(PokemonPartyDataModel partyData, string roomName)
+        public async Task AddPokemonToParty(PokemonPartyDataModel partyData, string pokemonName, string roomName)
         {
             if (connectionManager.CurrentlyConnectedUsers.TryGetValue(Context.ConnectionId, out UserModel? user))
             {
                 await roomOrchestrator.AddPokemonToParty(partyData, roomName);
                 await InvokePokemonAddedToParty(partyData, roomName);
+
+                var message = new MessageModel
+                {
+                    User = ChatBot,
+                    MessageText = $"User {user.Username} has added {pokemonName} to room",
+                    SentDate = DateTime.Now,
+                };
+
+                await roomOrchestrator.AddMessageToRoom(message, roomName);
+
+                await InvokeMessageSentToAllInRoom(message, roomName);
             }
         }
 
@@ -168,10 +179,24 @@ namespace MultiplayerPokemon.Server.Hubs
             await InvokeRemovePokemonFromParty(position, roomName);
         }
 
-        public async Task RemoveMultiplePokemonFromParty(IEnumerable<int> positions, string roomName)
+        public async Task RemoveMultiplePokemonFromParty(IEnumerable<int> positions, IEnumerable<string> pokemonNames, string roomName)
         {
-            await roomOrchestrator.RemoveMultiplePokemonFromParty(positions, roomName);
-            await InvokeRemoveMultiplePokemonFromParty(positions, roomName);
+            if (connectionManager.CurrentlyConnectedUsers.TryGetValue(Context.ConnectionId, out UserModel? user))
+            {
+                await roomOrchestrator.RemoveMultiplePokemonFromParty(positions, roomName);
+                await InvokeRemoveMultiplePokemonFromParty(positions, roomName);
+
+                var message = new MessageModel
+                {
+                    User = ChatBot,
+                    MessageText = $"User {user.Username} has removed {string.Join(", ", pokemonNames)} from the room",
+                    SentDate = DateTime.Now
+                };
+
+                await roomOrchestrator.AddMessageToRoom(message, roomName);
+
+                await InvokeMessageSentToAllInRoom(message, roomName);
+            }
         }
 
         public async Task SwapPokemon(int currentPos, int newPos, string RoomName)
@@ -226,9 +251,14 @@ namespace MultiplayerPokemon.Server.Hubs
             await Clients.OthersInGroup(roomName).SendAsync("PokemonSwapped", currentPos, newPos);
         }
 
-        private async Task InvokeMessageSentToRoom(MessageModel message, string roomName)
+        private async Task InvokeMessageSentToOthersInRoom(MessageModel message, string roomName)
         {
             await Clients.OthersInGroup(roomName).SendAsync("MessageSentToRoom", message);
+        }
+
+        private async Task InvokeMessageSentToAllInRoom(MessageModel message, string roomName)
+        {
+            await Clients.Group(roomName).SendAsync("MessageSentToRoom", message);
         }
 
         private async Task InvokeGetConnectedRoomInfo(RoomModel room, string connectionId)
