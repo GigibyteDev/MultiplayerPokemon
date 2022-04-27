@@ -71,7 +71,7 @@
                                     </form>
                                 }
 
-                            @if (RoomState.Value.SearchedPokemon is not null)
+                            @if (RoomState.Value.SearchedPokemon is not null && RoomState.Value.SearchedPokemon.CanAddToParty)
                             {
                                 <button type="button" class="submit-button-active" @onclick="HandleAddPokemonToParty">Add To Party</button>
                             }
