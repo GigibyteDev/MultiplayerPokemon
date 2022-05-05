@@ -94,13 +94,17 @@ namespace MultiplayerPokemon.Server.Repositories
         {
             if (users.Any(u => u.Username.ToLower().Trim() == request.Username.ToLower().Trim()))
             {
-                User user = users.Single(u => u.Username.ToLower().Trim() == request.Username.ToLower().Trim());
-                return new RegisterResult { Id = user.Id };
+                return new RegisterResult
+                {
+                    Id = -1,
+                    Success = false,
+                    ErrorMessage = "User already exists!"
+                };
             }
 
             users.Add(new User(userId++, request));
 
-            return new RegisterResult { Id = userId };
+            return new RegisterResult { Success = true, Id = userId };
         }
     }
 }

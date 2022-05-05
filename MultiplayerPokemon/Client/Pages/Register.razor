@@ -3,34 +3,57 @@
 <PageTitle>Register</PageTitle>
 
 <div class="main-form-wrapper">
-
 <EditForm Model="user" OnValidSubmit="HandleRegisterUser" class="login-form">
     <div class="login-wrapper">
         <div class="input-form-group">
             <div class="input-form">
                 <label for="username">Username</label>
                 <InputText id="username" @bind-Value="user.Username"></InputText>
+                <div class="register-error-messages">
+                    <ValidationMessage For="@(() => user.Username)"/>
+                </div>
             </div>
             <div class="input-form">
                 <label for="email">Email</label>
                 <InputText id="email" @bind-Value="user.Email"></InputText>
+                <div class="register-error-messages">
+                    <ValidationMessage For="@(() => user.Email)"/>
+                </div>
             </div>
             <div class="input-form">
                 <label for="password">Password</label>
                 <InputText id="password" @bind-Value="user.Password" type="password"></InputText>
+                <div class="register-error-messages">
+                    <ValidationMessage For="@(() => user.Password)"/>
+                </div>
             </div>
             <div class="input-form">
                 <label for="password-match">Confirm Password</label>
                 <InputText id="password-match" @bind-Value="user.PasswordCheck" type="password"></InputText>
+                <div class="register-error-messages">
+                    <ValidationMessage For="@(() => user.PasswordCheck)"/>
+                </div>
             </div>
         </div>
         <br />
         <button type="submit">Register</button>
     </div>
         <DataAnnotationsValidator />
+        <div class="register-error-messages">
+            <p>@errorMessage</p>
+        </div>
 </EditForm>
 
 <div class="register-link-wrapper">
     <h3>Already have an account?  <NavLink style="color: white;" href="">Back To Login</NavLink></h3>
 </div>
+<div class="registration-notice-message">
+    <p><b>Please Note:</b></p>
+    <br />
+    <p>This application's purpose is to demonstrate technology and web development capability only.</p>
+    <br />
+    <p>While all information entered here will not persist in any physical medium and will cease to persist beyond the application life-cycle, it is still advised to <b>NOT</b> use actual emails or re-used passwords.</p>
 </div>
+</div>
+
+

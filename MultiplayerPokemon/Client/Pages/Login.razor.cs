@@ -18,6 +18,7 @@ namespace MultiplayerPokemon.Client.Pages
 
         private UserLoginModel user = new UserLoginModel();
 
+        private string errorMessage = string.Empty;
         private async Task HandleLogin()
         {
             LoginRequest request = new LoginRequest
@@ -34,6 +35,10 @@ namespace MultiplayerPokemon.Client.Pages
             {
                 await LocalStorage.SetItemAsync("jwt", content.JWT);
                 await AuthStateProvider.GetAuthenticationStateAsync();
+            }
+            else
+            {
+                errorMessage = content.ErrorMessage;
             }
         }
     }

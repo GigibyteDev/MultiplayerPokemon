@@ -23,6 +23,7 @@ namespace MultiplayerPokemon.Client.Models
         [Compare("Password")]
         [MaxLength(128)]
         [MinLength(4)]
+        [Display(Name = "Password Confirmation")]
         public string PasswordCheck { get; set; }
     }
 }

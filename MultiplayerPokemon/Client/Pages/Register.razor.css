@@ -8,8 +8,9 @@
 .main-form-wrapper {
     display: flex;
     flex-direction: column;
-    height: 85vh;
+    height: 100vh;
     justify-content: center;
+    overflow-y: auto;
 }
 
 .input-form{
@@ -22,4 +23,34 @@
 .register-link-wrapper{
     display: flex;
     justify-content: center;
+}
+
+.register-error-messages {
+    color: red;
+    list-style-type: none;
+    text-align: center;
+}
+
+.validation-message {
+    list-style-type: none;
+    color: red;
+}
+
+.registration-notice-message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    background-color: #121212;
+    margin-top: 2em;
+    margin-bottom: -12em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.registration-notice-message p{
+    color: #c3c3c3;
+    margin: 0em;
+    width: 35em;
 }

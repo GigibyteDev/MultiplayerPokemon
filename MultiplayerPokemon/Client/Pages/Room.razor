@@ -31,7 +31,7 @@
                 @if (roomTabToggle)
                 {
                     <div class="pokemon-search-wrapper">
-                        <div class="pokemon-search-form" @onsubmit="() => HandleGetPokemon()">
+                        <div class="pokemon-search-form">
                             @if (SearchDataState.Value is not null && SearchDataState.Value.PokemonNames.Any())
                             {
                                 <div class="typeahead-search-button-wrapper">

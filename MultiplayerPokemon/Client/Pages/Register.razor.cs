@@ -24,6 +24,8 @@ namespace MultiplayerPokemon.Client.Pages
 
         private RegisterUserModel user = new RegisterUserModel();
 
+        private string errorMessage = string.Empty;
+
         protected override async void OnInitialized()
         {
             if (!string.IsNullOrWhiteSpace(await LocalStorage.GetItemAsStringAsync("jwt")))
@@ -48,19 +50,26 @@ namespace MultiplayerPokemon.Client.Pages
 
             var registerResult = await registerResultData.Content.ReadFromJsonAsync<RegisterResult>();
 
-            if (registerResult?.Id != 0)
+            if (registerResult is not null)
             {
-                var loginResultData = await Http.PostAsJsonAsync("Login", new LoginRequest { Username = user.Username, Password = user.Password });
-
-                loginResultData.EnsureSuccessStatusCode();
-
-                var loginResult = await loginResultData.Content.ReadFromJsonAsync<LoginResult>();
-
-                if (loginResult?.Success == true)
+                if (registerResult.Success == true)
                 {
-                    await LocalStorage.SetItemAsync("jwt", loginResult.JWT);
-                    await AuthStateProvider.GetAuthenticationStateAsync();
-                    NavigationManager.NavigateTo("");
+                    var loginResultData = await Http.PostAsJsonAsync("Login", new LoginRequest { Username = user.Username, Password = user.Password });
+
+                    loginResultData.EnsureSuccessStatusCode();
+
+                    var loginResult = await loginResultData.Content.ReadFromJsonAsync<LoginResult>();
+
+                    if (loginResult?.Success == true)
+                    {
+                        await LocalStorage.SetItemAsync("jwt", loginResult.JWT);
+                        await AuthStateProvider.GetAuthenticationStateAsync();
+                        NavigationManager.NavigateTo("");
+                    }
+                }
+                else
+                {
+                    errorMessage = registerResult.ErrorMessage;
                 }
             }
         }
